@@ -23,7 +23,7 @@ export class UserManagementComponent implements OnInit {
   }
 
   getTableRows(){
-    return ['bannedPerson','bannedUntil','reason','bannedFrom','banTime','deleteButton'];
+    return ['bannedPerson','reason','banTime','bannedUntil','bannedFrom','deleteButton'];
   }
 
   getBannedUntil(param:Ban) {
