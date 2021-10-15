@@ -112,7 +112,7 @@ public class Event2Service {
 
     public Response createTeam(UUID paramTeamID, Event2Team teamParam) {
 
-        if (paramTeamID == null || teamParam == null | teamParam.getTeamname() == null) {
+        if (paramTeamID == null || teamParam == null || teamParam.getTeamname() == null) {
             return Response.status(400).entity(new ResponseMessage("Null value provided")).build();
         }
 
@@ -238,7 +238,7 @@ public class Event2Service {
 
     public Response editTeam(Event2Team teamParam) {
 
-        if (teamParam == null | teamParam.getTeamname() == null) {
+        if (teamParam == null || teamParam.getTeamname() == null) {
             return Response.status(400).entity(new ResponseMessage("Null value provided")).build();
         }
 
@@ -313,7 +313,7 @@ public class Event2Service {
             return Response.status(400).entity(new ResponseMessage("You are already member of that team")).build();
         }
 
-        //TODO cant register in multiple teams
+
 
         Event2RelTeamPerson newRel = new Event2RelTeamPerson(teamFromDB, personFromDB);
         newRel.persist();
