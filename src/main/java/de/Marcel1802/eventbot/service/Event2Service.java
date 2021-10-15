@@ -313,7 +313,18 @@ public class Event2Service {
             return Response.status(400).entity(new ResponseMessage("You are already member of that team")).build();
         }
 
+        Event2RelEventTeam relTeam = Event2RelEventTeam.find("event2team = ?1",teamFromDB).firstResult();
+        if (relTeam == null) {
+            return Response.status(500).entity(new ResponseMessage("The team is not connected to an event")).build();
+        }
 
+        for (Event2Team elem : relTeam.getEvent().getTeams()) {
+            for (Person p : elem.getMembers()) {
+                if (p.getId() == personFromDB.getId()) {
+                    return Response.status(400).entity(new ResponseMessage("You can't take part in multiple teams.")).build();
+                }
+            }
+        }
 
         Event2RelTeamPerson newRel = new Event2RelTeamPerson(teamFromDB, personFromDB);
         newRel.persist();
