@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatTableDataSource } from '@angular/material/table';
-import { config } from 'process';
 import { Ban } from 'src/app/_classes/Ban';
 import { AdminService } from 'src/app/_services/admin.service';
 

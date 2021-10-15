@@ -1,56 +1,59 @@
 <div class="headline">Event erstellen</div>
 
-<div class="row-flex">
-    <form [formGroup]="topFormGrp">
+
+<form [formGroup]="topFormGrp" class="row-flex">
 
 
-        <ng-container>
-            <mat-form-field appearance="fill" class="formContainer">
-                <mat-label>Spiel</mat-label>
-                <mat-select formControlName="game">
-                    <mat-option *ngFor="let elem of gamesArr" [value]="elem">{{elem.title}}</mat-option>
-                </mat-select>
-            </mat-form-field>
-        </ng-container>
+    <ng-container>
+        <mat-form-field class="formContainer">
+            <mat-label>Spiel</mat-label>
+            <mat-select formControlName="game">
+                <mat-option *ngFor="let elem of gamesArr" [value]="elem">{{elem.title}}</mat-option>
+            </mat-select>
+        </mat-form-field>
+    </ng-container>
 
 
-        <ng-container>
-            <mat-form-field appearance="fill" class="formContainer">
-                <mat-label>Event-Name</mat-label>
-                <input type="text" matInput formControlName="eventName">
-            </mat-form-field>
-        </ng-container>
+    <ng-container>
+        <mat-form-field class="formContainer">
+            <mat-label>Event-Name</mat-label>
+            <input maxlength="64" #message type="text" matInput formControlName="eventName">
+            <mat-hint align="end">{{message.value.length}} / 64</mat-hint>
+        </mat-form-field>
+    </ng-container>
 
-        <ng-container>
-            <mat-form-field id="description" appearance="fill" class="formContainer">
-                <mat-label>Event-Beschreibung</mat-label>
-                <input maxlength="200" #message matInput type="text" formControlName="description">
-                <mat-hint align="end">{{message.value.length}} / 200</mat-hint>
-            </mat-form-field>
-        </ng-container>
+    <ng-container>
+        <mat-form-field class="formContainer">
+            <mat-label>Datum</mat-label>
+            <input matInput [matDatepicker]="dp" formControlName="eventDate">
+            <mat-datepicker-toggle matSuffix [for]="dp"></mat-datepicker-toggle>
+            <mat-datepicker #dp></mat-datepicker>
+        </mat-form-field>
+    </ng-container>
 
-        <ng-container>
-            <mat-form-field appearance="fill" class="formContainer">
-                <mat-label>Datum</mat-label>
-                <input matInput [matDatepicker]="dp" formControlName="eventDate">
-                <mat-datepicker-toggle matSuffix [for]="dp"></mat-datepicker-toggle>
-                <mat-datepicker #dp></mat-datepicker>
-            </mat-form-field>
-        </ng-container>
+    <ng-container>
+        <mat-form-field class="formContainer">
+            <mat-label>Event-Art</mat-label>
+            <mat-select formControlName="eventType">
+                <mat-option value="event1">Normal</mat-option>
+                <mat-option value="event2">Mit Teams</mat-option>
+                <mat-option value="event3">Mit Teams und Slots</mat-option>
+            </mat-select>
+        </mat-form-field>
+    </ng-container>
 
-        <ng-container>
-            <mat-form-field appearance="fill" class="formContainer">
-                <mat-label>Event-Art</mat-label>
-                <mat-select formControlName="eventType">
-                    <mat-option value="event1">Normal</mat-option>
-                    <mat-option value="event2">Mit Teams</mat-option>
-                    <mat-option value="event3">Mit Teams und Slots</mat-option>
-                </mat-select>
-            </mat-form-field>
-        </ng-container>
+    <br>
 
-    </form>
-</div>
+    <ng-container>
+        <mat-form-field id="description" class="formContainer">
+            <mat-label>Event-Beschreibung</mat-label>
+            <input maxlength="200" #message matInput type="text" formControlName="description">
+            <mat-hint align="end">{{message.value.length}} / 256</mat-hint>
+        </mat-form-field>
+    </ng-container>
+
+</form>
+
 
 <ng-container *ngIf="topFormGrp.get('eventType').value !== null && topFormGrp.get('eventType').value === 'event1'">
     <div>
