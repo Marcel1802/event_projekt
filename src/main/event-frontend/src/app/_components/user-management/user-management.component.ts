@@ -36,7 +36,6 @@ export class UserManagementComponent implements OnInit {
   }
 
   deleteBan(param:Ban, tbl:number, index:number) {
-    console.log("INDEX: "+index)
     this.adminService.removeBan(param.id).subscribe(data => {
       switch (tbl) {
         case 1: {
