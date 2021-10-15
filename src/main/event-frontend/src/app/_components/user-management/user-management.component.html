@@ -1,7 +1,7 @@
 <div class="headline">Benutzer verwalten</div>
 
 <mat-tab-group animationDuration="200ms">
-    <mat-tab label="Benutzer ausschließen">
+    <mat-tab label="Ausschlüsse verwalten">
         
     </mat-tab>
 
@@ -9,27 +9,27 @@
         <table mat-table [dataSource]="actualBans">
             <ng-container matColumnDef="bannedPerson">
                 <th mat-header-cell *matHeaderCellDef>Gebannte Person</th>
-                <td mat-cell *matCellDef="let elem">{{elem.bannedPerson.gamertag}}</td>
+                <td mat-cell *matCellDef="let elem; let i = index">{{elem.bannedPerson.gamertag}}</td>
             </ng-container>
             <ng-container matColumnDef="bannedUntil">
                 <th mat-header-cell *matHeaderCellDef>Gebannt bis</th>
-                <td mat-cell *matCellDef="let elem">{{getBannedUntil(elem) !== 'Permanent' ? (getBannedUntil(elem) | date: 'dd.MM.yyyy HH:mm') : getBannedUntil(elem)}}</td>
+                <td mat-cell *matCellDef="let elem; let i = index">{{getBannedUntil(elem) !== 'Permanent' ? (getBannedUntil(elem) | date: 'dd.MM.yyyy HH:mm') : getBannedUntil(elem)}}</td>
             </ng-container>
             <ng-container matColumnDef="reason">
                 <th mat-header-cell *matHeaderCellDef>Grund</th>
-                <td mat-cell *matCellDef="let elem">{{elem.reason}}</td>
+                <td mat-cell *matCellDef="let elem; let i = index">{{elem.reason}}</td>
             </ng-container>
             <ng-container matColumnDef="bannedFrom">
                 <th mat-header-cell *matHeaderCellDef>Gebannt von</th>
-                <td mat-cell *matCellDef="let elem">{{elem.bannedFrom.gamertag}}</td>
+                <td mat-cell *matCellDef="let elem; let i = index">{{elem.bannedFrom.gamertag}}</td>
             </ng-container>
             <ng-container matColumnDef="banTime">
                 <th mat-header-cell *matHeaderCellDef>Bann-Zeit</th>
-                <td mat-cell *matCellDef="let elem">{{elem.banTime | date: 'dd.MM.yyyy HH:mm'}}</td>
+                <td mat-cell *matCellDef="let elem; let i = index">{{elem.banTime | date: 'dd.MM.yyyy HH:mm'}}</td>
             </ng-container>
             <ng-container matColumnDef="deleteButton">
                 <th mat-header-cell *matHeaderCellDef></th>
-                <td mat-cell *matCellDef="let elem">BUTTON</td>
+                <td mat-cell *matCellDef="let elem; let i = index"><button class="deleteBanButton" (click)="deleteBan(elem,1,i)" mat-stroked-button><mat-icon>delete</mat-icon></button></td>
             </ng-container>
             <tr mat-header-row *matHeaderRowDef="getTableRows()"></tr>
             <tr mat-row *matRowDef="let row; columns: getTableRows()"></tr>
@@ -46,27 +46,27 @@
         <table mat-table [dataSource]="permanentBans">
             <ng-container matColumnDef="bannedPerson">
                 <th mat-header-cell *matHeaderCellDef>Gebannte Person</th>
-                <td mat-cell *matCellDef="let elem">{{elem.bannedPerson.gamertag}}</td>
+                <td mat-cell *matCellDef="let elem; let i = index">{{elem.bannedPerson.gamertag}}</td>
             </ng-container>
             <ng-container matColumnDef="bannedUntil">
                 <th mat-header-cell *matHeaderCellDef>Gebannt bis</th>
-                <td mat-cell *matCellDef="let elem">{{getBannedUntil(elem) !== 'Permanent' ? (getBannedUntil(elem) | date: 'dd.MM.yyyy HH:mm') : getBannedUntil(elem)}}</td>
+                <td mat-cell *matCellDef="let elem; let i = index">{{getBannedUntil(elem) !== 'Permanent' ? (getBannedUntil(elem) | date: 'dd.MM.yyyy HH:mm') : getBannedUntil(elem)}}</td>
             </ng-container>
             <ng-container matColumnDef="reason">
                 <th mat-header-cell *matHeaderCellDef>Grund</th>
-                <td mat-cell *matCellDef="let elem">{{elem.reason}}</td>
+                <td mat-cell *matCellDef="let elem; let i = index">{{elem.reason}}</td>
             </ng-container>
             <ng-container matColumnDef="bannedFrom">
                 <th mat-header-cell *matHeaderCellDef>Gebannt von</th>
-                <td mat-cell *matCellDef="let elem">{{elem.bannedFrom.gamertag}}</td>
+                <td mat-cell *matCellDef="let elem; let i = index">{{elem.bannedFrom.gamertag}}</td>
             </ng-container>
             <ng-container matColumnDef="banTime">
                 <th mat-header-cell *matHeaderCellDef>Bann-Zeit</th>
-                <td mat-cell *matCellDef="let elem">{{elem.banTime | date: 'dd.MM.yyyy HH:mm'}}</td>
+                <td mat-cell *matCellDef="let elem; let i = index">{{elem.banTime | date: 'dd.MM.yyyy HH:mm'}}</td>
             </ng-container>
             <ng-container matColumnDef="deleteButton">
                 <th mat-header-cell *matHeaderCellDef></th>
-                <td mat-cell *matCellDef="let elem">BUTTON</td>
+                <td mat-cell *matCellDef="let elem; let i = index"><button class="deleteBanButton" (click)="deleteBan(elem,2,i)" mat-stroked-button><mat-icon>delete</mat-icon></button></td>
             </ng-container>
             <tr mat-header-row *matHeaderRowDef="getTableRows()"></tr>
             <tr mat-row *matRowDef="let row; columns: getTableRows()"></tr>
@@ -83,27 +83,27 @@
         <table mat-table [dataSource]="expiredBans">
             <ng-container matColumnDef="bannedPerson">
                 <th mat-header-cell *matHeaderCellDef>Gebannte Person</th>
-                <td mat-cell *matCellDef="let elem">{{elem.bannedPerson.gamertag}}</td>
+                <td mat-cell *matCellDef="let elem; let i = index">{{elem.bannedPerson.gamertag}}</td>
             </ng-container>
             <ng-container matColumnDef="bannedUntil">
                 <th mat-header-cell *matHeaderCellDef>Gebannt bis</th>
-                <td mat-cell *matCellDef="let elem">{{getBannedUntil(elem) !== 'Permanent' ? (getBannedUntil(elem) | date: 'dd.MM.yyyy HH:mm') : getBannedUntil(elem)}}</td>
+                <td mat-cell *matCellDef="let elem; let i = index">{{getBannedUntil(elem) !== 'Permanent' ? (getBannedUntil(elem) | date: 'dd.MM.yyyy HH:mm') : getBannedUntil(elem)}}</td>
             </ng-container>
             <ng-container matColumnDef="reason">
                 <th mat-header-cell *matHeaderCellDef>Grund</th>
-                <td mat-cell *matCellDef="let elem">{{elem.reason}}</td>
+                <td mat-cell *matCellDef="let elem; let i = index">{{elem.reason}}</td>
             </ng-container>
             <ng-container matColumnDef="bannedFrom">
                 <th mat-header-cell *matHeaderCellDef>Gebannt von</th>
-                <td mat-cell *matCellDef="let elem">{{elem.bannedFrom.gamertag}}</td>
+                <td mat-cell *matCellDef="let elem; let i = index">{{elem.bannedFrom.gamertag}}</td>
             </ng-container>
             <ng-container matColumnDef="banTime">
                 <th mat-header-cell *matHeaderCellDef>Bann-Zeit</th>
-                <td mat-cell *matCellDef="let elem">{{elem.banTime | date: 'dd.MM.yyyy HH:mm'}}</td>
+                <td mat-cell *matCellDef="let elem; let i = index">{{elem.banTime | date: 'dd.MM.yyyy HH:mm'}}</td>
             </ng-container>
             <ng-container matColumnDef="deleteButton">
                 <th mat-header-cell *matHeaderCellDef></th>
-                <td mat-cell *matCellDef="let elem">BUTTON</td>
+                <td mat-cell *matCellDef="let elem; let i = index"><button class="deleteBanButton" (click)="deleteBan(elem,3,i)" mat-stroked-button><mat-icon>delete</mat-icon></button></td>
             </ng-container>
             <tr mat-header-row *matHeaderRowDef="getTableRows()"></tr>
             <tr mat-row *matRowDef="let row; columns: getTableRows()"></tr>

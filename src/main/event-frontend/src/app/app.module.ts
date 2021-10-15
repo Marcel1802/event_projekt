@@ -21,6 +21,7 @@ import { MatSortModule } from '@angular/material/sort';
 import { MatSelectModule } from '@angular/material/select';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import {MatSlideToggleModule} from '@angular/material/slide-toggle';
+import {MatSnackBarModule} from '@angular/material/snack-bar';
 
 import { HttpClientModule } from '@angular/common/http';
 import { LoginService } from './_services/login.service';
@@ -51,7 +52,8 @@ import { ShowSingleEventComponent } from './_components/show-single-event/show-s
     MatSortModule,
     MatSelectModule,
     MatProgressSpinnerModule,
-    MatSlideToggleModule
+    MatSlideToggleModule,
+    MatSnackBarModule
   ],
   exports: [],
   providers: [HttpClientModule, LoginService],

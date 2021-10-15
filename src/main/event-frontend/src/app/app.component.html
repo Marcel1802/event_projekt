@@ -23,7 +23,7 @@
       <button (click)="drawer.toggle()" [routerLink]="['/edit-event']" *ngIf="hasPermission('event_canEditOwn') || hasPermission('event_canEditAll')" class="sidebar-button" mat-stroked-button>Event bearbeiten</button><br>
       <button (click)="drawer.toggle()" [routerLink]="['/delete-event']" *ngIf="hasPermission('event_canDeleteOwn') || hasPermission('event_canDeleteAll')" class="sidebar-button" mat-stroked-button>Event löschen</button><br>
       <br>
-      <button (click)="drawer.toggle()" [routerLink]="['/user-management']" *ngIf="hasPermission('event_usermanagement')" class="sidebar-button" mat-stroked-button>Benutzer-Management</button><br>
+      <button (click)="drawer.toggle()" [routerLink]="['/user-management']" *ngIf="hasPermission('event_usermanagement')" class="sidebar-button" mat-stroked-button>Banns verwalten</button><br>
     </mat-drawer>
   
     <mat-drawer-content id="drawerContent">

@@ -25,7 +25,9 @@ export class AdminService {
     return this.httpC.get(environment.requestURL + `/admin/ban/get/expired`, {headers: this.httpHeader });
   }
 
+  public removeBan(id:string) {
+    return this.httpC.delete(environment.requestURL + `/admin/ban/delete/` + id, {headers: this.httpHeader });
+  }
 
 
-  
 }
