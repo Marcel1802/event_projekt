@@ -1,5 +1,5 @@
 import { AfterViewInit, Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, FormControl } from '@angular/forms';
+import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
 import { Game } from 'src/app/_classes/game';
 import { EventService } from 'src/app/_services/event.service';
 
@@ -8,26 +8,25 @@ import { EventService } from 'src/app/_services/event.service';
   templateUrl: './create-event.component.html',
   styleUrls: ['./create-event.component.scss']
 })
-export class CreateEventComponent implements OnInit, AfterViewInit {
+export class CreateEventComponent implements OnInit {
 
   gamesArr:Game[] = [];
 
-  formTop = new FormGroup({
-    game: new FormControl(''),
-    eventType: new FormControl('')
-  });
+  topFormGrp: FormGroup;
 
-  constructor(private eventService: EventService) {
+  constructor(private eventService: EventService, public formBuilder:FormBuilder) {
+    this.topFormGrp = this.formBuilder.group({
+      game: ['', [Validators.required]],
+      eventType: ['', [Validators.required]],
+      eventName: ['', [Validators.required]],
+      eventDate: ['', [Validators.required]],
+      description: ['']
+    });
   }
 
   ngOnInit(): void {
     this.fetchGames();
   }
-
-  ngAfterViewInit(): void {
-    //TODO: downdown 1st value selected
-  }
-
 
   fetchGames() {
     this.eventService.getAllGames().subscribe(data => {

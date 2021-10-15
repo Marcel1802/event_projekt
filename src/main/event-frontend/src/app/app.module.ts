@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-
+import { ReactiveFormsModule } from '@angular/forms';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { UserManagementComponent } from './_components/user-management/user-management.component';
@@ -19,13 +19,19 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { MatCardModule } from '@angular/material/card';
 import { MatSortModule } from '@angular/material/sort';
 import { MatSelectModule } from '@angular/material/select';
-import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
-import {MatSlideToggleModule} from '@angular/material/slide-toggle';
-import {MatSnackBarModule} from '@angular/material/snack-bar';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
+import { MatInputModule } from '@angular/material/input';
 
 import { HttpClientModule } from '@angular/common/http';
 import { LoginService } from './_services/login.service';
 import { ShowSingleEventComponent } from './_components/show-single-event/show-single-event.component';
+import { MatFormFieldModule } from '@angular/material/form-field';
+
 
 @NgModule({
   declarations: [
@@ -42,6 +48,7 @@ import { ShowSingleEventComponent } from './_components/show-single-event/show-s
     BrowserAnimationsModule,
     AppRoutingModule,
     HttpClientModule,
+
     MatToolbarModule,
     MatSidenavModule,
     MatIconModule,
@@ -53,7 +60,13 @@ import { ShowSingleEventComponent } from './_components/show-single-event/show-s
     MatSelectModule,
     MatProgressSpinnerModule,
     MatSlideToggleModule,
-    MatSnackBarModule
+    MatSnackBarModule,
+    ReactiveFormsModule,
+    MatDialogModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    MatFormFieldModule,
+    MatInputModule,
   ],
   exports: [],
   providers: [HttpClientModule, LoginService],
