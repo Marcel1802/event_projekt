@@ -204,7 +204,6 @@ public class AdminService {
 
         return Response.status(200).entity(relFromDB).build();
 
-
     }
 
     public Response getAllGroups() {

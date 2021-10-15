@@ -79,16 +79,16 @@ public class Event3Rest {
 
     @POST
     @Transactional
-    @Path("create/squad")
-    public Response createA3Squad(Event3Squad squad) {
-        return a3service.createA3Squad(squad);
+    @Path("create/squad/{eventID}")
+    public Response createA3Squad(@PathParam("eventID") UUID eventID, Event3Squad squad) {
+        return a3service.createA3Squad(eventID, squad);
     }
 
     @POST
     @Transactional
-    @Path("create/slot")
-    public Response createA3Slot(Event3Slot slot) {
-        return a3service.createA3Slot(slot);
+    @Path("create/slot/{squadID}")
+    public Response createA3Slot(@PathParam("squadID") UUID squadID, Event3Slot slot) {
+        return a3service.createA3Slot(squadID, slot);
     }
 
     @DELETE

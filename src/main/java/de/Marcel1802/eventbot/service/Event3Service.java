@@ -184,10 +184,16 @@ public class Event3Service {
 
     }
 
-    public Response createA3Squad(Event3Squad squad) {
+    public Response createA3Squad(UUID eventID, Event3Squad squad) {
 
-        if (squad == null || squad.getSquadname() == null) {
+        if (eventID == null || squad == null || squad.getSquadname() == null) {
             return Response.status(400).entity(new ResponseMessage("Null values are not permitted.")).build();
+        }
+
+        Event3 eventFromDB = Event3.findById(eventID);
+
+        if (eventFromDB == null) {
+            return Response.status(400).entity(new ResponseMessage("Invalid event provided")).build();
         }
 
         if (squad.getDescription() == null) {
@@ -206,13 +212,26 @@ public class Event3Service {
             return Response.status(500).entity(new ResponseMessage("Could not persist the new Squad")).build();
         }
 
+        Event3RelEventSquad newRel = new Event3RelEventSquad(eventFromDB, newSquad);
+        newRel.persist();
+
+        if (!newRel.isPersistent()) {
+            return Response.status(500).entity(new ResponseMessage("Could not persist squad event relation")).build();
+        }
+
         return Response.status(201).entity(newSquad).build();
     }
 
-    public Response createA3Slot(Event3Slot slot) {
+    public Response createA3Slot(UUID squadID, Event3Slot slot) {
 
-        if (slot == null || slot.getRole() == null) {
+        if (squadID == null || slot == null || slot.getRole() == null) {
             return Response.status(400).entity(new ResponseMessage("Null values are not permitted")).build();
+        }
+
+        Event3Squad squadFromDB = Event3Squad.findById(squadID);
+
+        if (squadFromDB == null) {
+            return Response.status(400).entity(new ResponseMessage("Invalid squad provided")).build();
         }
 
         Event3Slot newSlot = new Event3Slot(slot.getRole());
@@ -221,6 +240,13 @@ public class Event3Service {
 
         if (!newSlot.isPersistent()) {
             return Response.status(500).entity(new ResponseMessage("Could not perstist the new slot")).build();
+        }
+
+        Event3RelSquadSlot newRel = new Event3RelSquadSlot(squadFromDB, newSlot);
+        newRel.persist();
+
+        if (!newRel.isPersistent()) {
+            return Response.status(500).entity(new ResponseMessage("Could not perstist slot squad relation")).build();
         }
 
         return Response.status(201).entity(newSlot).build();
