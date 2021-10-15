@@ -26,6 +26,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatInputModule } from '@angular/material/input';
+import { MatTimepickerModule } from 'mat-timepicker';
 
 import { HttpClientModule } from '@angular/common/http';
 import { LoginService } from './_services/login.service';
@@ -67,6 +68,8 @@ import { MatFormFieldModule } from '@angular/material/form-field';
     MatNativeDateModule,
     MatFormFieldModule,
     MatInputModule,
+    MatTimepickerModule
+    
   ],
   exports: [],
   providers: [HttpClientModule, LoginService],

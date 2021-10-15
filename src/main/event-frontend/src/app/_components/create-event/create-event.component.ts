@@ -20,6 +20,7 @@ export class CreateEventComponent implements OnInit {
       eventType: ['', [Validators.required]],
       eventName: ['', [Validators.required]],
       eventDate: ['', [Validators.required]],
+      eventTime: ['', [Validators.required]],
       description: ['']
     });
   }

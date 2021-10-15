@@ -3,10 +3,13 @@
     font-size: 20px;
 }
 
-.rowFlex {
-    width: 100%;
+.row-flex {
     display: flex;
-    justify-content: space-between;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-around;
+
+    margin-bottom: 10px;
 }
 
 #calendar {
@@ -15,9 +18,19 @@
 }
 
 #description {
-    width:600px;
+    width:90%;
+}
+
+#event-name {
+    width: 30%
 }
 
 .formContainer {
-    justify-content: space-between;
+    width: 250px;
+    height: 60px;
+    border: 1px black dotted;
+}
+
+.width-class {
+    width: 15%;
 }

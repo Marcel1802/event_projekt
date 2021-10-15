@@ -24,6 +24,7 @@
     "@angular/router": "~12.2.10",
     "keycloak-angular": "^8.4.0",
     "keycloak-js": "^15.0.2",
+    "mat-timepicker": "^5.1.4",
     "rxjs": "~6.6.0",
     "tslib": "^2.0.0",
     "zone.js": "~0.11.4"
