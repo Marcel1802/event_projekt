@@ -1,4 +1,4 @@
-#Running the project
+# Running the project
 
 Docker containers (PostgreSQL DB & Keycloak Auth server): `docker compose up -d` (root directory)
 
