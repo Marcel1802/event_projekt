@@ -1,5 +1,6 @@
 package de.Marcel1802.eventbot.service;
 
+import de.Marcel1802.eventbot.entities.Person;
 import de.Marcel1802.eventbot.entities.ResponseMessage;
 import de.Marcel1802.eventbot.entities.event3.Event3;
 import de.Marcel1802.eventbot.entities.event3.Event3RelEventSquad;
@@ -424,6 +425,76 @@ public class Event3Service {
         s.setRole(slot.getRole());
 
         return Response.status(200).entity(s).build();
+    }
+
+    public Response leaveSlot(UUID eventSlotID, UUID personID) {
+
+        if (eventSlotID == null || personID == null) {
+            return Response.status(400).entity(new ResponseMessage("Null value provided")).build();
+        }
+
+        Event3Slot slotFromDB = Event3Slot.findById(eventSlotID);
+
+        if (slotFromDB == null) {
+            return Response.status(400).entity(new ResponseMessage("Invalid slot ID provided")).build();
+        }
+
+        Person personFromDB = Person.findById(personID);
+
+        if (personFromDB == null) {
+            return Response.status(400).entity(new ResponseMessage("Invalid person ID provided")).build();
+        }
+
+        if (slotFromDB.getSlotUsedBy() != personFromDB) {
+            return Response.status(400).entity(new ResponseMessage("Cannot unregister from slot: You are not using this slot.")).build();
+        }
+
+        slotFromDB.setSlotUsedBy(null);
+
+        return Response.status(200).entity(slotFromDB).build();
+    }
+
+    public Response joinSlot (UUID eventSlotID, UUID personID) {
+        if (eventSlotID == null || personID == null) {
+            return Response.status(400).entity(new ResponseMessage("Null value provided")).build();
+        }
+
+        Event3Slot slotFromDB = Event3Slot.findById(eventSlotID);
+
+        if (slotFromDB == null) {
+            return Response.status(400).entity(new ResponseMessage("Invalid slot ID provided")).build();
+        }
+
+        Person personFromDB = Person.findById(personID);
+
+        if (personFromDB == null) {
+            return Response.status(400).entity(new ResponseMessage("Invalid person ID provided")).build();
+        }
+
+        if (slotFromDB.getSlotUsedBy() != null) {
+            return Response.status(400).entity(new ResponseMessage("Slot already in use.")).build();
+        }
+
+        Event3RelSquadSlot relSquadSlot = Event3RelSquadSlot.find("event3slot = ?1", slotFromDB).firstResult();
+        if (relSquadSlot == null)  {
+            return Response.status(500).entity(new ResponseMessage("The slot is not linked to a squad.")).build();
+        }
+        Event3RelEventSquad relEventSquad = Event3RelEventSquad.find("event3squad = ?1", relSquadSlot.getEvent3squad()).firstResult();
+        if (relEventSquad == null) {
+            return Response.status(500).entity(new ResponseMessage("Squad of slot is not linked to an event.")).build();
+        }
+        for (Event3Squad squadElem : relEventSquad.getEvent3().getSquads()) {
+            for (Event3Slot slotElem : squadElem.getSlots()) {
+                if (slotElem.getSlotUsedBy() == personFromDB) {
+                    return Response.status(400).entity(new ResponseMessage("You cannot register for multiple slots.")).build();
+                }
+            }
+        }
+
+        slotFromDB.setSlotUsedBy(personFromDB);
+
+        return Response.status(200).entity(slotFromDB).build();
+
     }
 
 }

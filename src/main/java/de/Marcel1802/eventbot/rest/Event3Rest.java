@@ -133,4 +133,18 @@ public class Event3Rest {
         return a3service.editA3Slot(slot);
     }
 
+    @PUT
+    @Transactional
+    @Path("joinSlot/{slotID}/{personID}")
+    public Response joinSlot(@PathParam("slotID") UUID slotID, @PathParam("personID") UUID personID) {
+        return a3service.joinSlot(slotID, personID);
+    }
+
+    @PUT
+    @Transactional
+    @Path("leaveSlot/{slotID}/{personID}")
+    public Response leaveSlot (@PathParam("slotID") UUID slotID, @PathParam("personID") UUID personID) {
+        return  a3service.leaveSlot(slotID, personID);
+    }
+
 }
