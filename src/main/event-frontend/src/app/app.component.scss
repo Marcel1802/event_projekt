@@ -1,0 +1,56 @@
+mat-toolbar {
+    background-color: midnightblue;
+    color: white;
+    height: 60px;
+}
+
+#headerFont {
+    margin-left: 50px;
+}
+
+#menuButton {
+    color:white;
+    height: auto;
+    width: auto;
+}
+
+
+.sidenav {
+    padding: 20px;
+    background-color: white;
+    height: 100%;
+}
+
+
+#logout-button {
+    color: black;
+    background-color: white;
+    margin-left: 25px;
+}
+
+.flex-content {
+    justify-content: space-between;
+}
+
+.sidebar-button {
+    margin-bottom: 2px;
+    width: 100%;
+    background-color: rgb(163, 154, 154);
+}
+
+#drawerContainer {
+  display: flex;
+}
+
+#drawerContent {
+    flex: 1 1 auto;
+}
+
+mat-drawer-container {display: block; height: calc(100% - 60px); }
+mat-drawer {display: block; height: 100%; }
+router-outlet { height: 100%; overflow-y: auto; }
+mat-drawer-content { height: 100%;}
+
+#loading {
+    margin: auto;
+}

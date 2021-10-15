@@ -1,0 +1,26 @@
+version: '3'
+
+services:
+
+  eventDB-postgres:
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_DB: eventDB
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: docker
+    ports:
+      - 5432:5432
+
+  keycloak:
+    image: quay.io/keycloak/keycloak:15.0.2
+    restart: always
+    volumes:
+    - ./keycloak-import:/opt/jboss/keycloak/imports
+    environment:
+      KEYCLOAK_USER: admin
+      KEYCLOAK_PASSWORD: admin
+    ports:
+      - 8180:8080
+    command: 
+      - "-b 0.0.0.0 -Dkeycloak.import=/opt/jboss/keycloak/imports/keycloak-realm.json"

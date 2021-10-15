@@ -1,0 +1,27 @@
+<div class="headline">Event erstellen</div>
+
+<div class="row-flex">
+    <form>
+        <span>
+            <span class="dropdownTitle">Spiel:</span>
+            <mat-form-field appearance="fill">
+                <mat-select>
+                    <mat-option *ngFor="let elem of gamesArr" value="elem.title">{{elem.title}}</mat-option>
+                </mat-select>
+            </mat-form-field>
+        </span>
+
+        <span>
+            <span class="dropdownTitle">Eventart:</span>
+            <mat-form-field appearance="fill">
+                <mat-select>
+                    <mat-option value="event1">Normal</mat-option>
+                    <mat-option value="event2">Mit Teams</mat-option>
+                    <mat-option value="event3">Mit Teams und Slots</mat-option>
+                </mat-select>
+            </mat-form-field>
+        </span>
+    </form>
+</div>
+
+<!-- https://angular.io/guide/reactive-forms -->

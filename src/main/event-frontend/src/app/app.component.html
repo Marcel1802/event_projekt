@@ -1,0 +1,44 @@
+<ng-container *ngIf="loginService.isBanned == null">
+  <mat-spinner id="loading"></mat-spinner>
+</ng-container>
+
+<ng-container *ngIf="loginService.isBanned !== null && !loginService.isBanned">
+  <mat-toolbar class="flex-content">
+    <div>
+      <button id="menuButton" mat-button (click)="drawer.toggle()"><mat-icon>menu</mat-icon></button>
+      <span id="headerFont">Event-Planer</span>
+    </div>
+  
+    <div>
+      <span>Eingeloggt als: {{loginService.getLoginUsername()}}</span>
+      <span><button mat-stroked-button id="logout-button" (click)="logout()">Ausloggen</button></span>
+    </div>
+  </mat-toolbar>
+  
+  <mat-drawer-container id="drawerContainer">
+  
+    <mat-drawer #drawer class="sidenav" mode="push">
+      <button (click)="drawer.toggle()" [routerLink]="['/event-list']" class="sidebar-button" mat-stroked-button>Event-Übersicht</button><br>
+      <button (click)="drawer.toggle()" [routerLink]="['/create-event']" *ngIf="hasPermission('event_canCreate')" class="sidebar-button" mat-stroked-button>Event erstellen</button><br>
+      <button (click)="drawer.toggle()" [routerLink]="['/edit-event']" *ngIf="hasPermission('event_canEditOwn') || hasPermission('event_canEditAll')" class="sidebar-button" mat-stroked-button>Event bearbeiten</button><br>
+      <button (click)="drawer.toggle()" [routerLink]="['/delete-event']" *ngIf="hasPermission('event_canDeleteOwn') || hasPermission('event_canDeleteAll')" class="sidebar-button" mat-stroked-button>Event löschen</button><br>
+      <br>
+      <button (click)="drawer.toggle()" [routerLink]="['/user-management']" *ngIf="hasPermission('event_usermanagement')" class="sidebar-button" mat-stroked-button>Benutzer-Management</button><br>
+    </mat-drawer>
+  
+    <mat-drawer-content id="drawerContent">
+      <mat-card class="mainCard">
+        <router-outlet></router-outlet>
+      </mat-card>
+    </mat-drawer-content>
+    
+  </mat-drawer-container>
+</ng-container>
+
+<ng-container *ngIf="loginService.isBanned !== null && loginService.isBanned">
+Du wurdest gebannt
+</ng-container>
+
+
+
+
