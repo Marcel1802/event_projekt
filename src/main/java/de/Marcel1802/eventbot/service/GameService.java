@@ -84,6 +84,38 @@ public class GameService {
         return Response.status(200).entity(gameFromDB).build();
     }
 
+    public Response addGame(Game game) {
+        if (game == null || game.getTitle() == null) {
+            return Response.status(400).entity(new ResponseMessage("Null value provided")).build();
+        }
+
+        if (game.getTitle().replaceAll("\\s+","").equals("")){
+            return Response.status(400).entity(new ResponseMessage("Invalid event name")).build();
+        }
+
+        if (game.getDescription() == null) {
+            game.setDescription("");
+        }
+
+        Game newGame = new Game(game.getTitle(), game.getDescription());
+        newGame.persist();
+
+        if (!newGame.isPersistent()) {
+            return Response.status(500).entity(new ResponseMessage("Cannot persist new game.")).build();
+        }
+
+        return Response.status(201).entity(newGame).build();
+    }
+
+
+
+
+
+
+
+
+
+
 
 }
 

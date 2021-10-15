@@ -6,6 +6,7 @@ import de.Marcel1802.eventbot.service.GameService;
 import javax.transaction.Transactional;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
@@ -48,5 +49,11 @@ public class GameRest {
     public Response editGame(Game game) {
         return gameService.editGame(game);
     }
+
+    @POST
+    @Transactional
+    @Path("create")
+    public Response addGame(Game game) {return gameService.addGame(game);}
+
 
 }
