@@ -6,7 +6,7 @@
   <mat-toolbar class="flex-content">
     <div>
       <button id="menuButton" mat-button (click)="drawer.toggle()"><mat-icon>menu</mat-icon></button>
-      <span id="headerFont">Event-Planer</span>
+      <button mat-button id="headerFont" [routerLink]="['/event-list']">Event-Planer</button>
     </div>
   
     <div>
