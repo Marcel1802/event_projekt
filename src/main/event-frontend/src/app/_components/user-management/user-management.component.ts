@@ -40,14 +40,17 @@ export class UserManagementComponent implements OnInit {
         case 1: {
           this.actualBans.data.splice(index,1);
           this.actualBans._updateChangeSubscription();
+          break;
         }
         case 2: {
           this.permanentBans.data.splice(index,1);
           this.permanentBans._updateChangeSubscription();
+          break;
         }
         case 3: {
           this.expiredBans.data.splice(index,1);
           this.expiredBans._updateChangeSubscription();
+          break;
         }
       }
       this._snackBar.open("Bann erfolgreich gelöscht", null, {duration: 3000, panelClass: ['snackbar-green']})
