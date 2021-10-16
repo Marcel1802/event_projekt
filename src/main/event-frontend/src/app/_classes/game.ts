@@ -1,9 +1,5 @@
-export class Game {
-    public id: string; // UUID
-    public title: string;
-    public description: string;
-
-    public Game() {
-        
-    }
+export interface Game {
+    id: string; // UUID
+    title: string;
+    description: string;
 }
