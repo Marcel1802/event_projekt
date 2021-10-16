@@ -45,16 +45,17 @@ public class Event1Service {
             return Response.status(403).entity(new ResponseMessage("Sorry, but you are currently banned.")).build(); // 403 Forbidden
         }
 
+        if (event.getParticipants().contains(person)){
+            return Response.status(400).entity(new ResponseMessage("You are already registered")).build(); // 400 Bad Request
+        }
+
         if (event.getParticipants().size() >= event.getMaxPeople()){
             return Response.status(400).entity(new ResponseMessage("Too many people already registered for the event")).build(); // 400 Bad Request
         }
-        else if (event.getParticipants().contains(person)){
-            return Response.status(400).entity(new ResponseMessage("You are already registered")).build(); // 400 Bad Request
-        }
-        else{
-            event.addParticipant(person);
-            return Response.ok().entity(new ResponseMessage("Successfully registered")).build(); // 200 OK
-        }
+
+        event.addParticipant(person);
+        return Response.ok().entity(new ResponseMessage("Successfully registered")).build(); // 200 OK
+
     }
 
     public Response unregisterFromEvent(UUID eventID, UUID userID){
