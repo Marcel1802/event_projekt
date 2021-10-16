@@ -29,5 +29,8 @@ export class AdminService {
     return this.httpC.delete(environment.requestURL + `/admin/ban/delete/` + id, {headers: this.httpHeader });
   }
 
+  public getGroupsOfPerson(id:string) {
+    return this.httpC.get(environment.requestURL + `/admin/group/get/forPerson/` + id, {headers: this.httpHeader });
+  }
 
 }

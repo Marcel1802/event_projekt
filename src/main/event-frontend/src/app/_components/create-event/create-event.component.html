@@ -13,16 +13,16 @@
                 </mat-select>
             </mat-form-field>
         </ng-container>
-    
-    
+
+
         <ng-container class="formContainer">
             <mat-form-field id="event-name">
                 <mat-label>Event-Name</mat-label>
-                <input  maxlength="64" #message type="text" matInput formControlName="eventName">
+                <input maxlength="64" #message type="text" matInput formControlName="eventName">
                 <mat-hint align="end">{{message.value.length}} / 64</mat-hint>
             </mat-form-field>
         </ng-container>
-    
+
         <ng-container class="formContainer">
             <mat-form-field class="width-class">
                 <mat-label>Datum</mat-label>
@@ -38,7 +38,17 @@
                 <input matTimepicker formControlName="eventTime">
             </mat-form-field>
         </ng-container>
-    
+
+        <ng-container class="formContainer">
+            <mat-form-field class="width-class">
+                <mat-label>Sichtbar für Gruppe</mat-label>
+                <mat-select formControlName="group">
+                    <mat-option value="public"><b>Öffentliches Event</b></mat-option>
+                    <mat-option *ngFor="let elem of userGroups" [value]="elem">{{elem.name}}</mat-option>
+                </mat-select>
+            </mat-form-field>
+        </ng-container>
+
         <ng-container class="formContainer">
             <mat-form-field class="width-class">
                 <mat-label>Event-Art</mat-label>
@@ -49,28 +59,49 @@
                 </mat-select>
             </mat-form-field>
         </ng-container>
-    
+
         <ng-container>
             <mat-form-field id="description">
-                <mat-label>Event-Beschreibung</mat-label>
+                <mat-label>Event-Beschreibung (optional)</mat-label>
                 <input maxlength="200" #message matInput type="text" formControlName="description">
                 <mat-hint align="end">{{message.value.length}} / 256</mat-hint>
             </mat-form-field>
         </ng-container>
 
     </mat-card>
-
 </form>
 
 
-<mat-card *ngIf="topFormGrp.get('eventType').value !== null && topFormGrp.get('eventType').value === 'event1'">
-        event1-container
+<form [formGroup]="event1FormGrp">
+    <mat-card class="row-flex"
+        *ngIf="topFormGrp.get('eventType').value !== null && topFormGrp.get('eventType').value === 'event1'">
+
+        <ng-container>
+            <mat-form-field>
+                <mat-label>Minimale Teilnehmer</mat-label>
+                <input matInput type="number" min="4" formControlName="minPeople">
+            </mat-form-field>
+        </ng-container>
+
+        <ng-container>
+            <mat-form-field>
+                <mat-label>Maximale Teilnehmer</mat-label>
+                <input matInput type="number" formControlName="maxPeople">
+            </mat-form-field>
+        </ng-container>
+
+    </mat-card>
+</form>
+
+<mat-card class="row-flex"
+    *ngIf="topFormGrp.get('eventType').value !== null && topFormGrp.get('eventType').value === 'event2'">
+    event2-container
 </mat-card>
 
-<mat-card *ngIf="topFormGrp.get('eventType').value !== null && topFormGrp.get('eventType').value === 'event2'">
-        event2-container
+<mat-card class="row-flex"
+    *ngIf="topFormGrp.get('eventType').value !== null && topFormGrp.get('eventType').value === 'event3'">
+    event3-container
 </mat-card>
 
-<mat-card *ngIf="topFormGrp.get('eventType').value !== null && topFormGrp.get('eventType').value === 'event3'">
-        event3-container
-</mat-card>
+<button color="primary" *ngIf="topFormGrp.get('eventType').value" style="margin-top: 10px; width: 100%;"
+    mat-raised-button (click)="createEvent()">Event erstellen</button>

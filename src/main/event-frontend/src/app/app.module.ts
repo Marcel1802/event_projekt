@@ -27,6 +27,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatInputModule } from '@angular/material/input';
 import { MatTimepickerModule } from 'mat-timepicker';
+import { MAT_DATE_LOCALE } from '@angular/material/core';
 
 import { HttpClientModule } from '@angular/common/http';
 import { LoginService } from './_services/login.service';
@@ -72,7 +73,11 @@ import { MatFormFieldModule } from '@angular/material/form-field';
     
   ],
   exports: [],
-  providers: [HttpClientModule, LoginService],
+  providers: [
+    HttpClientModule,
+    LoginService,
+    {provide: MAT_DATE_LOCALE, useValue: 'de-DE'}
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

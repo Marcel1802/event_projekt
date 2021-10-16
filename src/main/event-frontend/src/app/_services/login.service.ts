@@ -1,7 +1,9 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable, OnInit } from '@angular/core';
 import { environment } from 'src/environments/environment';
+import { Group } from '../_classes/Group';
 import { Person } from '../_classes/person';
+import { AdminService } from './admin.service';
 
 @Injectable({
   providedIn: 'root'
@@ -12,6 +14,11 @@ export class LoginService {
   private _permissionArr:String[] = [];
   private _currentPerson: Person = null;
   private _isBanned: boolean = null;
+  private _userGroups: Group[] = [];
+
+  public get userGroups(): Group[] {
+    return this._userGroups;
+  }
 
   public get isBanned(): boolean {
     return this._isBanned;
@@ -25,7 +32,7 @@ export class LoginService {
     return this._permissionArr;
   }
 
-  constructor(private httpC: HttpClient) {
+  constructor(private httpC: HttpClient, private adminService:AdminService) {
     this.initKeycloak();
   }
 
@@ -46,6 +53,15 @@ export class LoginService {
       this.checkBans(this._currentPerson.id).subscribe(d => {
         this._isBanned = (d as boolean);
       })
+
+      this.adminService.getGroupsOfPerson(this._currentPerson.id).subscribe(data => {
+        if (data != null) {
+          (data as Group[]).forEach(elem => {
+            this.userGroups.push(elem as Group);
+          });
+          this.userGroups.sort((a,b) => a.name > b.name ? 1 : -1);
+        }
+      });
     });
 
     
@@ -82,7 +98,5 @@ export class LoginService {
   checkBans(UUID:string) {
     return this.httpC.get(environment.requestURL + `/admin/ban/checkperson/` + UUID, {headers: this.httpHeader });
   }
-
-
 
 }
