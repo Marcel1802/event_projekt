@@ -91,4 +91,8 @@ public class AdminRest {
         return adminService.getGroupByID(gID);
     }
 
+    @GET
+    @Path("group/get/forPerson/{ID}")
+    public Response getGroupsForPerson(@PathParam("ID") UUID id) { return adminService.getGroupsForUser(id); }
+
 }

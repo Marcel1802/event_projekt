@@ -11,7 +11,9 @@ import de.Marcel1802.eventbot.entities.groups.RelGroupPerson;
 import javax.enterprise.context.ApplicationScoped;
 import javax.ws.rs.core.Response;
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 @ApplicationScoped
@@ -224,6 +226,34 @@ public class AdminService {
             return Response.status(400).entity(new ResponseMessage("Invalid UUID")).build();
         }
         return Response.status(200).entity(returnValue).build();
+    }
+
+    public Response getGroupsForUser(UUID userID) {
+
+        if (userID == null) {
+            return Response.status(400).entity(new ResponseMessage("Null value provided.")).build();
+        }
+
+        Person personFromDB = Person.findById(userID);
+
+        if (personFromDB == null) {
+            return Response.status(400).entity(new ResponseMessage("Invalid user ID provided")).build();
+        }
+
+        List<RelGroupPerson> relGroupPeople = RelGroupPerson.find("person_id = ?1",personFromDB).list();
+
+        if (relGroupPeople.isEmpty()) {
+            return Response.status(204).build();
+        }
+
+        Set<Group> grpList = new HashSet<>();
+
+        for (RelGroupPerson elem : relGroupPeople) {
+            grpList.add(elem.getGroup());
+        }
+
+        return Response.status(200).entity(grpList).build();
+
     }
 
 }
