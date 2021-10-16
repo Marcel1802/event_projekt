@@ -12,6 +12,7 @@ export interface Event2 {
     createdBy:Person;
     createdTime:Date;
     group:Group | null;
-    teams: Event2Team[];
     type:number;
+
+    teams: Event2Team[];
 }

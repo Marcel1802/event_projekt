@@ -11,7 +11,8 @@ export interface Event3 {
     description: string;
     createdBy: Person;
     createdTime: Date;
-    squads: Event3Squad[];
     group:Group | null;
     type:number;
+
+    squads: Event3Squad[];
 }

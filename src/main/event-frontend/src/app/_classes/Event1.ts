@@ -8,11 +8,13 @@ export interface Event1 {
     game: Game;
     date: Date;
     description: string;
-    minPeople: number;
-    maxPeople: number;
-    createdBy: Person;
-    createdTime: Date;
-    participants: Person[];
     group:Group | null;
     type:number;
+    createdBy: Person;
+    createdTime: Date;
+
+    minPeople: number;
+    maxPeople: number;
+    participants: Person[];
+    
 } 
