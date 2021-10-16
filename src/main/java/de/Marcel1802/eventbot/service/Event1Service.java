@@ -1,9 +1,11 @@
 package de.Marcel1802.eventbot.service;
 
-import de.Marcel1802.eventbot.entities.event1.Event;
 import de.Marcel1802.eventbot.entities.Game;
 import de.Marcel1802.eventbot.entities.Person;
 import de.Marcel1802.eventbot.entities.ResponseMessage;
+import de.Marcel1802.eventbot.entities.creationEntities.Event1Creation;
+import de.Marcel1802.eventbot.entities.event1.Event;
+import de.Marcel1802.eventbot.entities.groups.Group;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.ws.rs.core.Response;
@@ -132,10 +134,10 @@ public class Event1Service {
         return Response.ok().entity(eList).build();
     }
 
-    public Response createEvent(Event event) {
+    public Response createEvent(Event1Creation event) {
 
         // int cannot be null, description can be null
-        if (event == null || event.getEventName() == null || event.getGame() == null || event.getDate() == null){
+        if (event == null || event.getEventName() == null || event.getGameID() == null || event.getDate() == null){
             return Response.status(400).entity(new ResponseMessage("Null values are not allowed")).build();
         }
 
@@ -143,41 +145,65 @@ public class Event1Service {
             return Response.status(400).entity(new ResponseMessage("Invalid event name")).build();
         }
 
+
+
         if (event.getDescription() == null) {
             event.setDescription("");
         }
+
+
 
         if (event.getMinPeople() < 4) {
             return Response.status(400).entity(new ResponseMessage("At least 4 people should be allowed to take part in an event.")).build();
         }
 
+
+
         if (event.getMinPeople() > event.getMaxPeople()) {
             return Response.status(400).entity(new ResponseMessage("The maximum amount of users cannot be less that the minimum amount.")).build();
         }
+
+
 
         if (event.getDate().isBefore(LocalDateTime.now().plusDays(3))) {
             return Response.status(400).entity(new ResponseMessage("Events must be planned 72 hours before they take part.")).build();
         }
 
-        if (Game.findById(event.getGame().getId()) == null || !Game.findById(event.getGame().getId()).equals(event.getGame())) {
-            return Response.status(400).entity(new ResponseMessage("The provided game is invalid")).build();
+
+
+        Group groupFromDB = null;
+
+        if (event.getGroupID() != null) {
+            groupFromDB = Group.findById(event.getGroupID());
+            if (groupFromDB == null) {
+                return Response.status(400).entity(new ResponseMessage("Invalid group provided.")).build();
+            }
         }
 
 
+        Game gameFromDB = null;
 
+        if (event.getGameID() != null) {
+            gameFromDB = Game.findById(event.getGameID());
+            if (gameFromDB == null) {
+                return Response.status(400).entity(new ResponseMessage("Invalid game provided.")).build();
+            }
+        }
 
 
 
         Event newObj = new Event
         (
             event.getEventName(),
-            event.getGame(),
+            gameFromDB,
             event.getDate(),
             event.getDescription(),
             event.getMinPeople(),
             event.getMaxPeople(),
-            event.getGroup()
+            groupFromDB
         );
+
+
 
         newObj.persist();
 
@@ -192,8 +218,6 @@ public class Event1Service {
     public Response deleteEvent(UUID uuid) {
 
         Event e = Event.findById(uuid);
-
-        System.out.println(e);
 
         if (e == null) {
             return Response.status(400).entity(new ResponseMessage("Event cannot be found")).build();

@@ -67,5 +67,10 @@ public class Game extends PanacheEntityBase {
         return Objects.hash(id, title, description);
     }
 
+    @Override
+    public String toString() {
+        return "ID: " + this.getId() + "\n" + "Title: " + this.getTitle()  + "\n" + "Description: " + this.getDescription();
+    }
+
 
 }

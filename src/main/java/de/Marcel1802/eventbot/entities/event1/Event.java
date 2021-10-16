@@ -30,8 +30,9 @@ public class Event extends PanacheEntityBase {
     @Length(max = 64)
     private String eventName;
 
+    @NotNull
     @ManyToOne
-    @JoinColumn(name = "game_id")
+    @JoinColumn(name = "game_id", nullable = false)
     private Game game;
 
     @NotNull
@@ -153,11 +154,11 @@ public class Event extends PanacheEntityBase {
 
     public Set<Person> getParticipants() {
         List<Event1RelEventUser> relList =  Event1RelEventUser.find("event1event = ?1",this).list();
-
         Set<Person> returnList = new HashSet<>();
-
-        for (Event1RelEventUser elem : relList) {
-            returnList.add(elem.getPerson_id());
+        if (relList.isEmpty()) {
+            for (Event1RelEventUser elem : relList) {
+                returnList.add(elem.getPerson_id());
+            }
         }
 
         return returnList;

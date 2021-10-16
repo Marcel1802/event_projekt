@@ -1,5 +1,6 @@
 package de.Marcel1802.eventbot.rest;
 
+import de.Marcel1802.eventbot.entities.creationEntities.Event1Creation;
 import de.Marcel1802.eventbot.entities.event1.Event;
 import de.Marcel1802.eventbot.service.Event1Service;
 
@@ -70,14 +71,14 @@ public class Event1Rest {
     @POST
     @Transactional
     @Path("create")
-    public Response createEvent(Event dto){
+    public Response createEvent(Event1Creation dto){
         return eservice.createEvent(dto);
     }
 
     @DELETE
     @Transactional
     @Path("delete/{UUID}")
-    public  Response deleteEvent(@PathParam("UUID") UUID uuid) {
+    public Response deleteEvent(@PathParam("UUID") UUID uuid) {
         return eservice.deleteEvent(uuid);
     }
 }
