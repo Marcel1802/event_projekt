@@ -36,30 +36,6 @@ export class EventListComponent implements OnInit {
     this.getPastEvents();
   }
 
-  @ViewChild(MatSort, { static: true }) sortPast: MatSort;
-  @ViewChild(MatSort, { static: true }) sortFuture: MatSort;
-
-  resetArrFuture() {
-    this.dataSourceFutureArr.sortingDataAccessor = (item, property) => {
-      switch(property) {
-        case 'game': return item.game.title;
-        default: return item[property];
-      }
-    };
-    this.dataSourceFutureArr.sort = this.sortFuture;
-  }
-
-  resetArrPast() {
-    this.dataSourcePastArr.sortingDataAccessor = (item, property): string | number => {
-      switch(property) {
-        case 'game': return item.game.title;
-        case 'slots': return (this.getUsedSlots(item) / this.getTotalSlots(item));
-        default: return item[property];
-      }
-    }
-    this.dataSourcePastArr.sort = this.sortPast;
-  }
-
   getFutureEvents() {
 
     let tmpArr:any[] = [];
@@ -70,8 +46,9 @@ export class EventListComponent implements OnInit {
           elem.type = 1;
           tmpArr.push((elem as Event1));
         });
+        tmpArr.sort(function(a,b) {return new Date(a.date).valueOf() - new Date(b.date).valueOf()});
         this.dataSourceFutureArr.data = tmpArr;
-        this.resetArrFuture();
+
       }
     });
 
@@ -81,8 +58,8 @@ export class EventListComponent implements OnInit {
           elem.type = 2;
           tmpArr.push((elem as Event2));
         });
+        tmpArr.sort(function(a,b) {return new Date(a.date).valueOf() - new Date(b.date).valueOf()});
         this.dataSourceFutureArr.data = tmpArr;
-        this.resetArrFuture();
       }
     });
 
@@ -92,8 +69,8 @@ export class EventListComponent implements OnInit {
           elem.type = 3;
           tmpArr.push((elem as Event3));
         });
+        tmpArr.sort(function(a,b) {return new Date(a.date).valueOf() - new Date(b.date).valueOf()});
         this.dataSourceFutureArr.data = tmpArr;
-        this.resetArrFuture();
       }
     });
 
@@ -109,8 +86,8 @@ export class EventListComponent implements OnInit {
           elem.type = 1;
           tmpArr.push((elem as Event1));
         });
+        tmpArr.sort(function(a,b) {return new Date(b.date).valueOf() - new Date(a.date).valueOf()});
         this.dataSourcePastArr.data = tmpArr;
-        this.resetArrPast();
       }
     });
 
@@ -120,8 +97,8 @@ export class EventListComponent implements OnInit {
           elem.type = 2;
           tmpArr.push((elem as Event2));
         });
+        tmpArr.sort(function(a,b) {return new Date(b.date).valueOf() - new Date(a.date).valueOf()});
         this.dataSourcePastArr.data = tmpArr;
-        this.resetArrPast();
       }
     });
 
@@ -131,8 +108,9 @@ export class EventListComponent implements OnInit {
           elem.type = 3;
           tmpArr.push((elem as Event3));
         });
+        tmpArr.sort(function(a,b) {return new Date(b.date).valueOf() - new Date(a.date).valueOf()});
         this.dataSourcePastArr.data = tmpArr;
-        this.resetArrPast();
+
       }
     });
   }
