@@ -2,6 +2,7 @@ import { formatDate, Time } from '@angular/common';
 import { Component, Inject, LOCALE_ID, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { Router } from '@angular/router';
 import { Event1 } from 'src/app/_classes/Event1';
 import { Game } from 'src/app/_classes/game';
 import { Group } from 'src/app/_classes/Group';
@@ -24,7 +25,7 @@ export class CreateEventComponent implements OnInit {
   event2FormGrp: FormGroup;
   event3FormGrp: FormGroup;
 
-  constructor(@Inject(LOCALE_ID) private locale: string, private _snackBar: MatSnackBar, private eventService: EventService, public formBuilder: FormBuilder, private loginService: LoginService, private adminService: AdminService) {
+  constructor(private router:Router, @Inject(LOCALE_ID) private locale: string, private _snackBar: MatSnackBar, private eventService: EventService, public formBuilder: FormBuilder, private loginService: LoginService, private adminService: AdminService) {
 
     this.topFormGrp = this.formBuilder.group({
       game: ['', [Validators.required]],
@@ -93,8 +94,9 @@ export class CreateEventComponent implements OnInit {
           };
 
           this.eventService.createEvent1(event).subscribe(data => {
-            this._snackBar.open("Event erstellt.", null, { duration: 3000, panelClass: ['snackbar-green'] });
-            
+            let returnObj = (data as Event1);
+            this._snackBar.open("Event erstellt.", null, { duration: 2000, panelClass: ['snackbar-green'] });
+            this.router.navigate(['/event', 1, returnObj.id]);
           }, error => {
             this._snackBar.open(error.message, null, { duration: 3000, panelClass: ['snackbar-red'] });
           });
