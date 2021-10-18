@@ -4,6 +4,7 @@ import { Event3 } from 'src/app/_classes/Event3';
 import { Event1 } from 'src/app/_classes/Event1';
 import { EventService } from 'src/app/_services/event.service';
 import { Event2 } from 'src/app/_classes/Event2';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-show-single-event',
@@ -12,9 +13,30 @@ import { Event2 } from 'src/app/_classes/Event2';
 })
 export class ShowSingleEventComponent implements OnInit {
 
-  constructor(private activatedRoute: ActivatedRoute, private router: Router, private eventService: EventService) { }
+  constructor(private activatedRoute: ActivatedRoute, private router: Router, private eventService: EventService, public formBuilder: FormBuilder) {
+
+    this.topFormGrp = this.formBuilder.group({
+      game: ['', [Validators.required]],
+      eventType: ['', [Validators.required]],
+      eventName: ['', [Validators.required]],
+      eventDate: ['', [Validators.required]],
+      eventTime: ['', [Validators.required]],
+      group: ['', [Validators.required]],
+      description: ['']
+    });
+
+    this.event1FormGrp = this.formBuilder.group({
+      minPeople: ['', [Validators.required]],
+      maxPeople: ['', [Validators.required]]
+    });
+  }
 
   event: Event1 | Event2 | Event3 = null;
+
+  topFormGrp: FormGroup;
+  event1FormGrp: FormGroup;
+
+  
 
   ngOnInit(): void {
     this.activatedRoute.params.subscribe(params => {
