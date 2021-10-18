@@ -7,12 +7,13 @@ import { CreateEventComponent } from './_components/create-event/create-event.co
 import { EditEventComponent } from './_components/edit-event/edit-event.component';
 import { DeleteEventComponent } from './_components/delete-event/delete-event.component';
 import { ShowSingleEventComponent } from './_components/show-single-event/show-single-event.component';
+import { AuthGuardService } from './_services/auth-guard.service';
 
 const routes: Routes = 
 [
   { path: 'user-management', component: UserManagementComponent },
 
-  { path: 'event-list', component: EventListComponent },
+  { path: 'event-list', component: EventListComponent, canActivate: [AuthGuardService]},//, data: {roles: ['']} 
   { path: 'create-event', component: CreateEventComponent },
   { path: 'edit-event', component: EditEventComponent },
   { path: 'delete-event', component: DeleteEventComponent },

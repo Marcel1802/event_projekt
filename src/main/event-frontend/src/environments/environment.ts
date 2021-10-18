@@ -2,6 +2,8 @@
 // `ng build --prod` replaces `environment.ts` with `environment.prod.ts`.
 // The list of file replacements can be found in `angular.json`.
 
+import { KeycloakService } from "keycloak-angular";
+
 export const environment = {
   production: false,
   requestURL: "http://127.0.0.1:8080"
@@ -15,3 +17,20 @@ export const environment = {
  * on performance if an error is thrown.
  */
 // import 'zone.js/plugins/zone-error';  // Included with Angular CLI.
+
+export function initializer(keycloak: KeycloakService) {
+  return () =>
+  keycloak.init({
+    config: {
+      url: 'http://localhost:8180/auth',
+      realm: 'test-realm',
+      clientId: 'event-frontend-client',
+    },
+    initOptions: {
+      onLoad: 'login-required',
+      silentCheckSsoRedirectUri:
+        window.location.origin + '/assets/slient-check-sso.html',
+    },
+    enableBearerInterceptor: true
+  });
+}

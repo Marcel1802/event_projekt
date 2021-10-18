@@ -66,12 +66,13 @@ export class LoginService {
 
     
     this._permissionArr = [
-      "event_canCreate",
+      "event_canCreateEvent",
       "event_canEditOwn",
       "event_canEditAll",
       "event_canDeleteOwn",
       "event_canDeleteAll",
-      "event_usermanagement"
+      "event_usermanagement",
+      "event_showAllEvents",
     ];
   }
 

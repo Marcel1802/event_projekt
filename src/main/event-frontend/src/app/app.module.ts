@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { APP_INITIALIZER, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { ReactiveFormsModule } from '@angular/forms';
 import { AppComponent } from './app.component';
@@ -29,10 +29,13 @@ import { MatInputModule } from '@angular/material/input';
 import { MatTimepickerModule } from 'mat-timepicker';
 import { MAT_DATE_LOCALE } from '@angular/material/core';
 
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { LoginService } from './_services/login.service';
 import { ShowSingleEventComponent } from './_components/show-single-event/show-single-event.component';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { KeycloakBearerInterceptor, KeycloakService } from 'keycloak-angular';
+import { AuthGuardService } from './_services/auth-guard.service';
+import { initializer } from 'src/environments/environment';
 
 
 @NgModule({
@@ -76,7 +79,21 @@ import { MatFormFieldModule } from '@angular/material/form-field';
   providers: [
     HttpClientModule,
     LoginService,
-    {provide: MAT_DATE_LOCALE, useValue: 'de-DE'}
+    {provide: MAT_DATE_LOCALE, useValue: 'de-DE'},
+    KeycloakService,
+    KeycloakBearerInterceptor,
+    AuthGuardService,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: KeycloakBearerInterceptor,
+      multi: true
+    },
+    {
+      provide: APP_INITIALIZER,
+      useFactory: initializer,
+      multi: true,
+      deps: [KeycloakService]
+    }
   ],
   bootstrap: [AppComponent]
 })
