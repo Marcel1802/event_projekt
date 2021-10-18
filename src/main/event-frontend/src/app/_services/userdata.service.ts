@@ -43,15 +43,54 @@ export class UserdataService {
 
   initKeycloak() {
 
+    let userID:string;
+    let userName:string;
+
+    try {
+      userID = this.keycloakService.getKeycloakInstance().idTokenParsed['sub'];
+      userName = this.keycloakService.getKeycloakInstance().idTokenParsed['preferred_username'];
+    }
+    catch(e) {
+      console.error("Cannot load keycloak data");
+      this.keycloakService.logout();
+    }
+
+    
+    
+
     // mock data
 
     // Marcel     4e45e088-591a-4909-8bb9-0d923bd3e7c8
-    // Donald     c4fcafc0-884d-49ff-8e4d-99be01e61615      
+    // Donald     c4fcafc0-884d-49ff-8e4d-99be01e61615
 
-    this.getPerson("4e45e088-591a-4909-8bb9-0d923bd3e7c8").subscribe(data => {
-      this._currentPerson = (data as Person);
+    this.adminService.getPerson(userID).subscribe(data => {
+      this.loadLoginData(data);
+    },error => {
 
-      this.checkBans(this._currentPerson.id).subscribe(d => {
+      console.warn("profil nicht gefunden.")
+
+      this.adminService.createPerson(userID,userName).subscribe(data1 => {
+
+        this.adminService.getPerson(userID).subscribe(data2 => {
+          this.loadLoginData(data2);
+        });
+
+      },error => {
+
+        console.warn("profil wieder nicht gefunden")
+
+        this.keycloakService.logout();
+      })
+    });
+
+    
+    this._permissionArr = this.keycloakService.getUserRoles();
+  }
+
+  loadLoginData(data) {
+    this._currentPerson = (data as Person);
+
+      this.adminService.checkBans(this._currentPerson.id).subscribe(d => {
         this._isBanned = (d as boolean);
       })
 
@@ -63,11 +102,6 @@ export class UserdataService {
           this.userGroups.sort((a,b) => a.name > b.name ? 1 : -1);
         }
       });
-    });
-
-    
-    this._permissionArr = this.keycloakService.getUserRoles();
-    console.log(this._permissionArr);
   }
 
   logout() {
@@ -78,9 +112,7 @@ export class UserdataService {
     return this._permissionArr.includes(perm);
   }
 
-  getPerson(UUID:string) {
-    return this.httpC.get(environment.requestURL + `/person/get/byID/` + UUID, {headers: this.httpHeader });
-  }
+  
 
   getLoginUsername() {
     if (this.currentPerson === null) {
@@ -90,8 +122,6 @@ export class UserdataService {
     return this._currentPerson.gamertag;
   }
 
-  checkBans(UUID:string) {
-    return this.httpC.get(environment.requestURL + `/admin/ban/checkperson/` + UUID, {headers: this.httpHeader });
-  }
+  
 
 }

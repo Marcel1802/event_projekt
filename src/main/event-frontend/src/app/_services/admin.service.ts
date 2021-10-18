@@ -33,4 +33,16 @@ export class AdminService {
     return this.httpC.get(environment.requestURL + `/admin/group/get/forPerson/` + id, {headers: this.httpHeader });
   }
 
+  public createPerson(id:string,name:string) {
+    return this.httpC.post(environment.requestURL + `/person/create/` + id + "/" + name, {headers: this.httpHeader });
+  }
+
+  public getPerson(UUID:string) {
+    return this.httpC.get(environment.requestURL + `/person/get/byID/` + UUID, {headers: this.httpHeader });
+  }
+
+  public checkBans(UUID:string) {
+    return this.httpC.get(environment.requestURL + `/admin/ban/checkperson/` + UUID, {headers: this.httpHeader });
+  }
+
 }
