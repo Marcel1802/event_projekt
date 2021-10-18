@@ -4,7 +4,11 @@ package de.Marcel1802.eventbot.rest;
 import de.Marcel1802.eventbot.entities.Banlist;
 import de.Marcel1802.eventbot.entities.groups.GroupRank;
 import de.Marcel1802.eventbot.service.AdminService;
+import io.quarkus.security.Authenticated;
+import io.quarkus.security.identity.SecurityIdentity;
 
+import javax.annotation.security.RolesAllowed;
+import javax.inject.Inject;
 import javax.transaction.Transactional;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -20,6 +24,10 @@ public class AdminRest {
 
     AdminService adminService = new AdminService();
 
+    @Inject
+    SecurityIdentity identity;
+
+    @RolesAllowed("event_usermanagement")
     @PUT
     @Transactional
     @Path("ban/create")
@@ -27,6 +35,7 @@ public class AdminRest {
         return adminService.banUser(banlist);
     }
 
+    @RolesAllowed("event_usermanagement")
     @DELETE
     @Transactional
     @Path("ban/delete/{banID}")
@@ -34,24 +43,28 @@ public class AdminRest {
         return adminService.unbanUser(banID);
     }
 
+    @RolesAllowed("event_usermanagement")
     @GET
     @Path("ban/get/actual")
     public Response getActualBans() {
         return adminService.getActualBans();
     }
 
+    @RolesAllowed("event_usermanagement")
     @GET
     @Path("ban/get/permanent")
     public Response getPermanentBans() {
         return adminService.getPermanentBans();
     }
 
+    @RolesAllowed("event_usermanagement")
     @GET
     @Path("ban/get/expired")
     public Response getExpiredBans() {
         return adminService.getExpiredBans();
     }
 
+    @Authenticated
     @GET
     @Path("ban/checkperson/{ID}")
     public Response checkBan(@PathParam("ID") UUID id) {

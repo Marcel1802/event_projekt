@@ -4,6 +4,7 @@ import de.Marcel1802.eventbot.entities.event3.Event3;
 import de.Marcel1802.eventbot.entities.event3.Event3Slot;
 import de.Marcel1802.eventbot.entities.event3.Event3Squad;
 import de.Marcel1802.eventbot.service.Event3Service;
+import io.quarkus.security.Authenticated;
 
 import javax.transaction.Transactional;
 import javax.ws.rs.DELETE;
@@ -20,30 +21,35 @@ public class Event3Rest {
 
     Event3Service a3service = new Event3Service();
 
+    @Authenticated
     @GET
     @Path("get/next")
     public Response getNextA3Event() {
         return a3service.getNextA3Event();
     }
 
+    @Authenticated
     @GET
     @Path("get/all")
     public Response getAllA3Events() {
         return a3service.getAllA3Events();
     }
 
+    @Authenticated
     @GET
     @Path("get/allFuture")
     public Response getAllFutureA3Events() {
         return a3service.getAllFutureA3Events();
     }
 
+    @Authenticated
     @GET
     @Path("get/allPast")
     public Response getAllPastA3Events() {
         return a3service.getAllPastA3Events();
     }
 
+    @Authenticated
     @GET
     @Path("get/byID/{id}")
     public Response getA3EventByID(@PathParam("id") UUID id)
@@ -51,6 +57,7 @@ public class Event3Rest {
         return a3service.getA3EventByID(id);
     }
 
+    @Authenticated
     @GET
     @Path("get/byName/{name}")
     public Response getA3EventByName(@PathParam("name") String name)
@@ -58,12 +65,14 @@ public class Event3Rest {
         return a3service.getA3EventByName(name);
     }
 
+    @Authenticated
     @GET
     @Path("getSlots/{squadID}")
     public Response getA3Slots(@PathParam("squadID") UUID squadID) {
         return a3service.getA3Slots(squadID);
     }
 
+    @Authenticated
     @GET
     @Path("getSquads/{eventID}")
     public Response getA3Squads(@PathParam("eventID") UUID eventID) {

@@ -7,8 +7,10 @@ import de.Marcel1802.eventbot.entities.ResponseMessage;
 import de.Marcel1802.eventbot.entities.groups.Group;
 import de.Marcel1802.eventbot.entities.groups.GroupRank;
 import de.Marcel1802.eventbot.entities.groups.RelGroupPerson;
+import io.quarkus.security.identity.SecurityIdentity;
 
 import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Inject;
 import javax.ws.rs.core.Response;
 import java.time.LocalDateTime;
 import java.util.HashSet;
@@ -18,6 +20,9 @@ import java.util.UUID;
 
 @ApplicationScoped
 public class AdminService {
+
+    @Inject
+    SecurityIdentity securityIdentity;
 
 
     public Response banUser(Banlist banlist) {
@@ -97,6 +102,7 @@ public class AdminService {
     }
 
     public Response checkBan(UUID id) {
+
         if (id == null) {
             return Response.status(400).entity(new ResponseMessage("Null value provided")).build();
         }
@@ -106,6 +112,17 @@ public class AdminService {
         if (p == null) {
             return Response.status(400).entity(new ResponseMessage("Invalid person provided")).build();
         }
+
+        /*
+
+        if (!identity.getPrincipal().getName().equals(p.getGamertag()) && !identity.getRoles().contains("event_usermanagement")) {
+            return Response.status(403).entity(new ResponseMessage("Not allowed")).build();
+        }
+
+         */
+
+        System.out.println(securityIdentity);
+
 
         if (Banlist.find("ispermanent = true AND bannedperson_id = ?1",p).firstResult() != null || Banlist.find("bannedperson_id = ?1 AND banneduntil < ?2", p, LocalDateTime.now()).firstResult() != null) {
             return Response.status(200).entity(true).build();

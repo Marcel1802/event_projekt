@@ -3,6 +3,7 @@ package de.Marcel1802.eventbot.rest;
 import de.Marcel1802.eventbot.entities.event2.Event2;
 import de.Marcel1802.eventbot.entities.event2.Event2Team;
 import de.Marcel1802.eventbot.service.Event2Service;
+import io.quarkus.security.Authenticated;
 
 import javax.transaction.Transactional;
 import javax.ws.rs.DELETE;
@@ -19,24 +20,28 @@ public class Event2Rest {
 
     Event2Service eservice = new Event2Service();
 
+    @Authenticated
     @GET
     @Path("/get/all")
     public Response getAllEvents() {
         return eservice.getAllEvents();
     }
 
+    @Authenticated
     @GET
     @Path("get/allFuture")
     public Response getAllFutureEvents() {
         return eservice.getAllFutureEvents();
     }
 
+    @Authenticated
     @GET
     @Path("get/allPast")
     public Response getAllPastEvents() {
         return eservice.getAllPastEvents();
     }
 
+    @Authenticated
     @GET
     @Path("get/byID/{id}")
     public Response getByID(@PathParam("id") UUID id) {
