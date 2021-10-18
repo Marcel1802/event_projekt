@@ -7,6 +7,7 @@ import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import io.smallrye.common.constraint.NotNull;
 import org.hibernate.validator.constraints.Length;
 
+import javax.json.bind.annotation.JsonbDateFormat;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
@@ -24,17 +25,19 @@ public class Person extends PanacheEntityBase {
     private UUID id;
 
     @JsonIgnore
+    @JsonbDateFormat(value = "yyyy-MM-dd HH:mm")
     private LocalDateTime accountCreated;
 
     @JsonIgnore
+    @JsonbDateFormat(value = "yyyy-MM-dd HH:mm")
     private LocalDateTime lastLogin;
 
     @NotNull
     @Length(max = 24)
     private String gamertag;
 
-    public Person(String gamertag){
-        this.id = UUID.randomUUID();
+    public Person(UUID id, String gamertag){
+        this.id = id;
         this.setGamertag(gamertag);
         this.accountCreated = LocalDateTime.now();
         this.setLastLogin(LocalDateTime.now());
