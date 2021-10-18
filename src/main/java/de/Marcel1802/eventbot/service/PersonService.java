@@ -33,4 +33,20 @@ public class PersonService {
         return Response.ok().entity(p).build();
     }
 
+    public Response createPerson(UUID id, String name) {
+
+        if (id == null || name == null) {
+            return Response.status(400).entity(new ResponseMessage("Null value provided")).build();
+        }
+
+        Person p = new Person(id,name);
+        p.persist();
+
+        if(!p.isPersistent()) {
+            return Response.status(500).entity(new ResponseMessage("Cannot save new person")).build();
+        }
+
+        return Response.status(200).entity(p).build();
+    }
+
 }
