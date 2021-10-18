@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
-import { LoginService } from './_services/login.service';
+import { UserdataService } from './_services/userdata.service';
 
 @Component({
   selector: 'app-root',
@@ -14,7 +14,7 @@ export class AppComponent implements OnInit {
 
   currentPage: String = "";
 
-  constructor(private route: ActivatedRoute, public loginService: LoginService){}
+  constructor(private route: ActivatedRoute, public loginService: UserdataService){}
 
   ngOnInit(): void {
 

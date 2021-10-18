@@ -30,7 +30,7 @@ import { MatTimepickerModule } from 'mat-timepicker';
 import { MAT_DATE_LOCALE } from '@angular/material/core';
 
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
-import { LoginService } from './_services/login.service';
+import { UserdataService } from './_services/userdata.service';
 import { ShowSingleEventComponent } from './_components/show-single-event/show-single-event.component';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { KeycloakBearerInterceptor, KeycloakService } from 'keycloak-angular';
@@ -78,7 +78,7 @@ import { initializer } from 'src/environments/environment';
   exports: [],
   providers: [
     HttpClientModule,
-    LoginService,
+    UserdataService,
     {provide: MAT_DATE_LOCALE, useValue: 'de-DE'},
     KeycloakService,
     KeycloakBearerInterceptor,

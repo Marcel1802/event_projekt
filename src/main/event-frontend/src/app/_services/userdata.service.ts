@@ -1,5 +1,6 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable, OnInit } from '@angular/core';
+import { KeycloakService } from 'keycloak-angular';
 import { environment } from 'src/environments/environment';
 import { Group } from '../_classes/Group';
 import { Person } from '../_classes/person';
@@ -8,7 +9,7 @@ import { AdminService } from './admin.service';
 @Injectable({
   providedIn: 'root'
 })
-export class LoginService {
+export class UserdataService {
 
   // Keycloak Stuff
   private _permissionArr:String[] = [];
@@ -32,7 +33,7 @@ export class LoginService {
     return this._permissionArr;
   }
 
-  constructor(private httpC: HttpClient, private adminService:AdminService) {
+  constructor(private httpC: HttpClient, private adminService:AdminService, private keycloakService:KeycloakService) {
     this.initKeycloak();
   }
 
@@ -65,19 +66,12 @@ export class LoginService {
     });
 
     
-    this._permissionArr = [
-      "event_canCreateEvent",
-      "event_canEditOwn",
-      "event_canEditAll",
-      "event_canDeleteOwn",
-      "event_canDeleteAll",
-      "event_usermanagement",
-      "event_showAllEvents",
-    ];
+    this._permissionArr = this.keycloakService.getUserRoles();
+    console.log(this._permissionArr);
   }
 
   logout() {
-    console.debug("logout button pressed");
+    this.keycloakService.logout();
   }
 
   hasPermission(perm:String) {

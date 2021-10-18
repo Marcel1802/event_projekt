@@ -8,7 +8,7 @@ import { Game } from 'src/app/_classes/game';
 import { Group } from 'src/app/_classes/Group';
 import { AdminService } from 'src/app/_services/admin.service';
 import { EventService } from 'src/app/_services/event.service';
-import { LoginService } from 'src/app/_services/login.service';
+import { UserdataService } from 'src/app/_services/userdata.service';
 
 @Component({
   selector: 'app-create-event',
@@ -25,7 +25,7 @@ export class CreateEventComponent implements OnInit {
   event2FormGrp: FormGroup;
   event3FormGrp: FormGroup;
 
-  constructor(private router:Router, @Inject(LOCALE_ID) private locale: string, private _snackBar: MatSnackBar, private eventService: EventService, public formBuilder: FormBuilder, private loginService: LoginService, private adminService: AdminService) {
+  constructor(private router:Router, @Inject(LOCALE_ID) private locale: string, private _snackBar: MatSnackBar, private eventService: EventService, public formBuilder: FormBuilder, private loginService: UserdataService, private adminService: AdminService) {
 
     this.topFormGrp = this.formBuilder.group({
       game: ['', [Validators.required]],
