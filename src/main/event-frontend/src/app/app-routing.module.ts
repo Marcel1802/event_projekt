@@ -19,8 +19,8 @@ const routes: Routes =
   { path: 'delete-event', component: DeleteEventComponent, canActivate: [AuthGuardService], data: {roles: ['event_canDeleteAll','event_canDeleteOwn']} },
   { path: 'event/:type/:id', component: ShowSingleEventComponent, canActivate: [AuthGuardService] },
 
-  { path: '', redirectTo: '/event-list', pathMatch: 'full', canActivate: [AuthGuardService] },
-  { path: '**', redirectTo: '/event-list', pathMatch: 'full', canActivate: [AuthGuardService] } 
+  { path: '', redirectTo: '/event-list', pathMatch: 'full'},
+  { path: '**', redirectTo: '/event-list', pathMatch: 'full'} 
 ];
 
 @NgModule({
