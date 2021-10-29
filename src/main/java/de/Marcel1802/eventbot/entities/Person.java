@@ -91,4 +91,14 @@ public class Person extends PanacheEntityBase {
 
         return returnList;
     }
+
+    @Override
+    public String toString() {
+        return "Person{" +
+                "id=" + id +
+                ", accountCreated=" + accountCreated +
+                ", lastLogin=" + lastLogin +
+                ", gamertag='" + gamertag + '\'' +
+                '}';
+    }
 }

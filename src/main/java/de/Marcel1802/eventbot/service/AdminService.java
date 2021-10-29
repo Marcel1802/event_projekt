@@ -4,6 +4,7 @@ package de.Marcel1802.eventbot.service;
 import de.Marcel1802.eventbot.entities.Banlist;
 import de.Marcel1802.eventbot.entities.Person;
 import de.Marcel1802.eventbot.entities.ResponseMessage;
+import de.Marcel1802.eventbot.entities.creationEntities.BanCreation;
 import de.Marcel1802.eventbot.entities.groups.Group;
 import de.Marcel1802.eventbot.entities.groups.GroupRank;
 import de.Marcel1802.eventbot.entities.groups.RelGroupPerson;
@@ -25,7 +26,9 @@ public class AdminService {
     SecurityIdentity securityIdentity;
 
 
-    public Response banUser(Banlist banlist) {
+    public Response banUser(BanCreation banlist) {
+
+        System.out.println(banlist.toString());
 
         if (banlist.getBannedPerson() == null || banlist.getReason() == null) {
             return Response.status(400).entity(new ResponseMessage("Null value provided")).build(); // 400 Bad Request
@@ -35,24 +38,32 @@ public class AdminService {
             return Response.status(400).entity(new ResponseMessage("No reason provided")).build(); // 400 Bad Request
         }
 
-        if (!banlist.getIsPermanent() && banlist.getBannedUntil() == null) {
-            return Response.status(400).entity(new ResponseMessage("No end of ban provided")).build(); // 400 Bad Request
+        if (!banlist.getPermanent()) {
+
+            if (banlist.getBannedUntil() == null) {
+                return Response.status(400).entity(new ResponseMessage("No end of ban provided")).build(); // 400 Bad Request
+            }
+
+            if (banlist.getBannedUntil().isBefore(LocalDateTime.now())) {
+                return Response.status(400).entity(new ResponseMessage("The end of the ban has to be in the future")).build(); // 400 Bad Request
+            }
+
         }
 
-        if (!banlist.getIsPermanent() && banlist.getBannedUntil().isBefore(LocalDateTime.now())) {
-            return Response.status(400).entity(new ResponseMessage("The end of the ban has to be in the future")).build(); // 400 Bad Request
+        Person personWhoBanned = Person.find("gamertag = ?1", securityIdentity.getPrincipal().getName()).firstResult();
+
+        if (personWhoBanned == null) {
+            return Response.status(400).entity(new ResponseMessage("Cannot find person who banned")).build();
         }
 
-        // TODO: keycloak get user by session
-        Person personWhoBanned = Person.findById("c4fcafc0-884d-49ff-8e4d-99be01e61615");
+        Person personToBan = Person.findById(UUID.fromString(banlist.getBannedPerson().getId()));
 
-        Person personToBan = Person.findById(banlist.getBannedPerson().getId());
         if (personToBan == null) {
             return Response.status(400).entity(new ResponseMessage("Person to ban to found")).build(); // 400 Bad Request
         }
 
 
-        Banlist newBan = new Banlist(personToBan, personWhoBanned, banlist.getBannedUntil(), banlist.getReason(), banlist.getIsPermanent());
+        Banlist newBan = new Banlist(personToBan, personWhoBanned, banlist.getBannedUntil(), banlist.getReason(), banlist.getPermanent());
 
         newBan.persist();
 

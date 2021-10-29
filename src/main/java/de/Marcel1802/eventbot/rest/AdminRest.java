@@ -1,7 +1,7 @@
 package de.Marcel1802.eventbot.rest;
 
 
-import de.Marcel1802.eventbot.entities.Banlist;
+import de.Marcel1802.eventbot.entities.creationEntities.BanCreation;
 import de.Marcel1802.eventbot.entities.groups.GroupRank;
 import de.Marcel1802.eventbot.service.AdminService;
 import io.quarkus.security.Authenticated;
@@ -29,11 +29,11 @@ public class AdminRest {
     SecurityIdentity securityIdentity;
 
     @RolesAllowed("event_usermanagement")
-    @PUT
+    @POST
     @Transactional
     @Path("ban/create")
-    public Response banUser(Banlist banlist){
-        return adminService.banUser(banlist);
+    public Response banUser(BanCreation ban){
+        return adminService.banUser(ban);
     }
 
     @RolesAllowed("event_usermanagement")

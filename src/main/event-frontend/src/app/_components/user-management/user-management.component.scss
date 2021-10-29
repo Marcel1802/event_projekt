@@ -6,3 +6,21 @@ table {
     color: white;
     background-color: red;
 }
+
+.formContainer {
+    width: 250px;
+    height: 60px;
+}
+
+.width-class {
+    width: 35%;
+}
+
+.row-flex {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-around;
+
+    margin-bottom: 10px;
+}

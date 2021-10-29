@@ -9,9 +9,8 @@ export class AdminService {
 
   constructor(private httpC:HttpClient) { }
 
-  private httpHeader = new HttpHeaders({
-    'accept': '*/*'
-  });
+  private httpHeader = new HttpHeaders({'accept': '*/*'});
+  private httpSendHeader = new HttpHeaders({'accept': '*/*', 'content-type': 'application/json'});
 
   public getActualBans() {
     return this.httpC.get(environment.requestURL + `/admin/ban/get/actual`, {headers: this.httpHeader });
@@ -45,4 +44,11 @@ export class AdminService {
     return this.httpC.get(environment.requestURL + `/admin/ban/checkperson/` + UUID, {headers: this.httpHeader });
   }
 
+  public getAllPersons() {
+    return this.httpC.get(environment.requestURL + `/person/get/all`, {headers: this.httpHeader});
+  }
+
+  public createBan(param:any) {
+    return this.httpC.post(environment.requestURL + `/admin/ban/create`, param, {headers: this.httpSendHeader})
+  }
 }
