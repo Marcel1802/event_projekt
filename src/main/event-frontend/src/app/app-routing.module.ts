@@ -11,16 +11,16 @@ import { AuthGuardService } from './_services/auth-guard.service';
 
 const routes: Routes = 
 [
-  { path: 'user-management', component: UserManagementComponent },
+  { path: 'user-management', component: UserManagementComponent, canActivate: [AuthGuardService], data: {roles: ['event_usermanagement']} },// create / delete bans only for global admins
 
   { path: 'event-list', component: EventListComponent, canActivate: [AuthGuardService]},//, data: {roles: ['']} 
-  { path: 'create-event', component: CreateEventComponent },
-  { path: 'edit-event', component: EditEventComponent },
-  { path: 'delete-event', component: DeleteEventComponent },
-  { path: 'event/:type/:id', component: ShowSingleEventComponent },
+  { path: 'create-event', component: CreateEventComponent, canActivate: [AuthGuardService], data: {roles: ['event_canCreateEvent']}},
+  { path: 'edit-event', component: EditEventComponent, canActivate: [AuthGuardService], data: {roles: ['event_canEditAll','event_canEditOwn']} },
+  { path: 'delete-event', component: DeleteEventComponent, canActivate: [AuthGuardService], data: {roles: ['event_canDeleteAll','event_canDeleteOwn']} },
+  { path: 'event/:type/:id', component: ShowSingleEventComponent, canActivate: [AuthGuardService] },
 
-  { path: '', redirectTo: '/event-list', pathMatch: 'full' },
-  { path: '**', redirectTo: '/event-list', pathMatch: 'full' } 
+  { path: '', redirectTo: '/event-list', pathMatch: 'full', canActivate: [AuthGuardService] },
+  { path: '**', redirectTo: '/event-list', pathMatch: 'full', canActivate: [AuthGuardService] } 
 ];
 
 @NgModule({
