@@ -72,6 +72,7 @@ public class AdminRest {
         return adminService.checkBan(id);
     }
 
+    @RolesAllowed("event_usermanagement")
     @POST
     @Transactional
     @Path("group/addMember/{groupID}/{personID}")
@@ -79,6 +80,7 @@ public class AdminRest {
         return adminService.addPersonToGroup(groupID, personID);
     }
 
+    @RolesAllowed("event_usermanagement")
     @DELETE
     @Transactional
     @Path("group/removeMember/{groupID}/{personID}")
@@ -86,6 +88,7 @@ public class AdminRest {
         return adminService.removePersonFromGroup(groupID, personID);
     }
 
+    @RolesAllowed("event_usermanagement")
     @PUT
     @Transactional
     @Path("group/changeRank/{groupID}/{personID}/{rank}")
@@ -93,18 +96,21 @@ public class AdminRest {
         return adminService.changeGroupRank(groupID, personID, rank);
     }
 
+    @RolesAllowed("event_usermanagement")
     @GET
     @Path("group/get/all")
     public Response getAllGroups() {
         return adminService.getAllGroups();
     }
 
+    @RolesAllowed("event_usermanagement")
     @GET
     @Path("group/get/byID/{ID}")
     public Response getGroupByID(@PathParam("ID") UUID gID) {
         return adminService.getGroupByID(gID);
     }
 
+    @Authenticated
     @GET
     @Path("group/get/forPerson/{ID}")
     public Response getGroupsForPerson(@PathParam("ID") UUID id) { return adminService.getGroupsForUser(id); }
