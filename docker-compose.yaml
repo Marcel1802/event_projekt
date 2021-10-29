@@ -3,6 +3,7 @@ version: '3'
 services:
 
   eventDB:
+    container_name: EventDB
     image: postgres
     restart: always
     environment:
@@ -12,17 +13,20 @@ services:
     ports:
       - 5432:5432
 
-#  keycloakDB:
-#    image: postgres
-#    restart: always
-#    environment:
-#      POSTGRES_DB: keycloakDB
-#      POSTGRES_USER: postgres
-#      POSTGRES_PASSWORD: docker
-#    ports:
-#      - 5433:5433
+  keycloakDB:
+    container_name: AuthDB
+    image: mysql:8.0.27
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: keycloak
+      MYSQL_USER: keycloak
+      MYSQL_PASSWORD: password
+    ports:
+      - 3306:3306
 
   keycloak:
+    container_name: Auth
     image: quay.io/keycloak/keycloak:15.0.2
     restart: always
     volumes:
@@ -30,13 +34,11 @@ services:
     environment:
       KEYCLOAK_USER: admin
       KEYCLOAK_PASSWORD: admin
-#      DB_VENDOR: POSTGRES
-#      DB_ADDR: keycloakDB
-#      DB_PORT: 5433
-#      DB_DATABASE: keycloakDB
-#      DB_USER: postgres
-#      DB_PASSWORD: docker
-#      DB_SCHEMA: public
+      DB_VENDOR: MYSQL
+      DB_ADDR: keycloakDB
+      DB_DATABASE: keycloak
+      DB_USER: keycloak
+      DB_PASSWORD: password
     ports:
       - 8180:8080
     command: 
