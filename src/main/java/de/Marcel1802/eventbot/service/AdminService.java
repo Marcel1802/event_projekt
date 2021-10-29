@@ -250,6 +250,10 @@ public class AdminService {
             return Response.status(400).entity(new ResponseMessage("Invalid user ID provided")).build();
         }
 
+        if (!securityIdentity.getPrincipal().getName().equals(personFromDB.getGamertag()) && !securityIdentity.getRoles().contains("event_usermanagement")) {
+            return Response.status(403).entity(new ResponseMessage("Not allowed")).build();
+        }
+
         List<RelGroupPerson> relGroupPeople = RelGroupPerson.find("person_id = ?1",personFromDB).list();
 
         if (relGroupPeople.isEmpty()) {
