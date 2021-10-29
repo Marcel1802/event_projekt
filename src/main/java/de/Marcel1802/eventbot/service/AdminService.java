@@ -113,14 +113,10 @@ public class AdminService {
             return Response.status(400).entity(new ResponseMessage("Invalid person provided")).build();
         }
 
-        /*
-
-        if (!identity.getPrincipal().getName().equals(p.getGamertag()) && !identity.getRoles().contains("event_usermanagement")) {
+        if (!securityIdentity.getPrincipal().getName().equals(p.getGamertag()) && !securityIdentity.getRoles().contains("event_usermanagement")) {
             return Response.status(403).entity(new ResponseMessage("Not allowed")).build();
         }
 
-         */
-        
         if (Banlist.find("ispermanent = true AND bannedperson_id = ?1",p).firstResult() != null || Banlist.find("bannedperson_id = ?1 AND banneduntil < ?2", p, LocalDateTime.now()).firstResult() != null) {
             return Response.status(200).entity(true).build();
         }
