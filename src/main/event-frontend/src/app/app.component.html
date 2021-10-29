@@ -22,6 +22,7 @@
       <button (click)="drawer.toggle()" [routerLink]="['/create-event']" *ngIf="hasPermission('event_canCreateEvent')" class="sidebar-button" mat-stroked-button>Event erstellen</button><br>
       <br>
       <button (click)="drawer.toggle()" [routerLink]="['/user-management']" *ngIf="hasPermission('event_usermanagement')" class="sidebar-button" mat-stroked-button>Banns verwalten</button><br>
+      <button (click)="drawer.toggle()" [routerLink]="['/group-management']" *ngIf="hasPermission('event_usermanagement')" class="sidebar-button" mat-stroked-button>Gruppen verwalten</button><br>
     </mat-drawer>
   
     <mat-drawer-content id="drawerContent">

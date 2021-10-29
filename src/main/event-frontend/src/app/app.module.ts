@@ -36,6 +36,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { KeycloakBearerInterceptor, KeycloakService } from 'keycloak-angular';
 import { AuthGuardService } from './_services/auth-guard.service';
 import { initializer } from 'src/environments/environment';
+import { ManageGroupsComponent } from './_components/manage-groups/manage-groups.component';
 
 
 @NgModule({
@@ -47,6 +48,7 @@ import { initializer } from 'src/environments/environment';
     EditEventComponent,
     EventListComponent,
     ShowSingleEventComponent,
+    ManageGroupsComponent,
   ],
   imports: [
     BrowserModule,
