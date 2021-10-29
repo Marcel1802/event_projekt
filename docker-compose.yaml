@@ -2,7 +2,7 @@ version: '3'
 
 services:
 
-  eventDB-postgres:
+  eventDB:
     image: postgres
     restart: always
     environment:
@@ -12,6 +12,16 @@ services:
     ports:
       - 5432:5432
 
+#  keycloakDB:
+#    image: postgres
+#    restart: always
+#    environment:
+#      POSTGRES_DB: keycloakDB
+#      POSTGRES_USER: postgres
+#      POSTGRES_PASSWORD: docker
+#    ports:
+#      - 5433:5433
+
   keycloak:
     image: quay.io/keycloak/keycloak:15.0.2
     restart: always
@@ -20,7 +30,16 @@ services:
     environment:
       KEYCLOAK_USER: admin
       KEYCLOAK_PASSWORD: admin
+#      DB_VENDOR: POSTGRES
+#      DB_ADDR: keycloakDB
+#      DB_PORT: 5433
+#      DB_DATABASE: keycloakDB
+#      DB_USER: postgres
+#      DB_PASSWORD: docker
+#      DB_SCHEMA: public
     ports:
       - 8180:8080
     command: 
       - "-b 0.0.0.0 -Dkeycloak.import=/opt/jboss/keycloak/imports/keycloak-realm.json"
+    depends_on:
+      - "keycloakDB"
