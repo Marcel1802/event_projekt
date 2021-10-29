@@ -4,7 +4,9 @@ import de.Marcel1802.eventbot.entities.event2.Event2;
 import de.Marcel1802.eventbot.entities.event2.Event2Team;
 import de.Marcel1802.eventbot.service.Event2Service;
 import io.quarkus.security.Authenticated;
+import io.quarkus.security.identity.SecurityIdentity;
 
+import javax.inject.Inject;
 import javax.transaction.Transactional;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -18,7 +20,11 @@ import java.util.UUID;
 @Path("event2")
 public class Event2Rest {
 
-    Event2Service eservice = new Event2Service();
+    @Inject
+    Event2Service eservice;
+
+    @Inject
+    SecurityIdentity identity;
 
     @Authenticated
     @GET

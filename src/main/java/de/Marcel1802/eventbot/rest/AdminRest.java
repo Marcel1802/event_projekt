@@ -22,10 +22,11 @@ import java.util.UUID;
 @Path("admin")
 public class AdminRest {
 
-    AdminService adminService = new AdminService();
+    @Inject
+    AdminService adminService;
 
     @Inject
-    SecurityIdentity identity;
+    SecurityIdentity securityIdentity;
 
     @RolesAllowed("event_usermanagement")
     @PUT
@@ -47,6 +48,7 @@ public class AdminRest {
     @GET
     @Path("ban/get/actual")
     public Response getActualBans() {
+        System.out.println("Security Identity: " + securityIdentity.getPrincipal());
         return adminService.getActualBans();
     }
 

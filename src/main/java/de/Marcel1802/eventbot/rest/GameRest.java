@@ -2,7 +2,9 @@ package de.Marcel1802.eventbot.rest;
 
 import de.Marcel1802.eventbot.entities.Game;
 import de.Marcel1802.eventbot.service.GameService;
+import io.quarkus.security.identity.SecurityIdentity;
 
+import javax.inject.Inject;
 import javax.transaction.Transactional;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -16,7 +18,11 @@ import java.util.UUID;
 @Path("game")
 public class GameRest {
 
-    GameService gameService = new GameService();
+    @Inject
+    GameService gameService;
+
+    @Inject
+    SecurityIdentity identity;
 
     @GET
     @Path("get/all")

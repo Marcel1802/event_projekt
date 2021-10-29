@@ -18,7 +18,8 @@ import java.util.UUID;
 @Path("person")
 public class PersonRest {
 
-    PersonService pservice = new PersonService();
+    @Inject
+    PersonService pservice;
 
     @Inject
     SecurityIdentity identity;
