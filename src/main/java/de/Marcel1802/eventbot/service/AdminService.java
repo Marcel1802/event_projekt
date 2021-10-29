@@ -120,10 +120,7 @@ public class AdminService {
         }
 
          */
-
-        System.out.println(securityIdentity);
-
-
+        
         if (Banlist.find("ispermanent = true AND bannedperson_id = ?1",p).firstResult() != null || Banlist.find("bannedperson_id = ?1 AND banneduntil < ?2", p, LocalDateTime.now()).firstResult() != null) {
             return Response.status(200).entity(true).build();
         }

@@ -48,7 +48,6 @@ public class AdminRest {
     @GET
     @Path("ban/get/actual")
     public Response getActualBans() {
-        System.out.println("Security Identity: " + securityIdentity.getPrincipal());
         return adminService.getActualBans();
     }
 
