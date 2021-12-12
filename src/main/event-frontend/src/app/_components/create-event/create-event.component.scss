@@ -3,33 +3,29 @@
     font-size: 20px;
 }
 
-.row-flex {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    justify-content: space-around;
-
-    margin-bottom: 10px;
-}
-
-#calendar {
-    width: 300px;
-    height: 400px;
-}
-
-#description {
-    width:90%;
-}
-
-#event-name {
-    width: 20%
-}
-
-.formContainer {
-    width: 250px;
-    height: 60px;
-}
-
 .width-class {
-    width: 15%;
+    width: 12vw;
+    min-width: 200px;
+}
+
+.eventCard {
+    width: fit-content;
+    margin: auto;
+}
+
+td {
+    width: fit-content;
+}
+
+.cellHeading {
+    width: fit-content;
+    padding-right: 3%;
+}
+
+.headline1 {
+    font-size: 20px;
+}
+
+.extra-cards {
+    width: c;
 }
