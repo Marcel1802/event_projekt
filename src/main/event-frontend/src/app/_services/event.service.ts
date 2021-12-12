@@ -65,7 +65,6 @@ export class EventService implements OnInit {
   }
 
   public createEvent1(param:any) {
-    console.warn(param.game)
     return this.httpC.post(environment.requestURL + `/event1/create`, param, {headers: this.httpSendHeader});
   }
 }
