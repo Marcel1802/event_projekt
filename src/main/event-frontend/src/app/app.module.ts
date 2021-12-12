@@ -37,6 +37,7 @@ import { KeycloakBearerInterceptor, KeycloakService } from 'keycloak-angular';
 import { AuthGuardService } from './_services/auth-guard.service';
 import { initializer } from 'src/environments/environment';
 import { ManageGroupsComponent } from './_components/manage-groups/manage-groups.component';
+import { GlobalHttpInterceptorService } from './_services/global-http-interceptor.service';
 
 
 @NgModule({
@@ -95,7 +96,8 @@ import { ManageGroupsComponent } from './_components/manage-groups/manage-groups
       useFactory: initializer,
       multi: true,
       deps: [KeycloakService]
-    }
+    },
+    { provide: HTTP_INTERCEPTORS, useClass: GlobalHttpInterceptorService, multi: true}
   ],
   bootstrap: [AppComponent]
 })
