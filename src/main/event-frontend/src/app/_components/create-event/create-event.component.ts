@@ -98,7 +98,7 @@ export class CreateEventComponent implements OnInit {
             this._snackBar.open("Event erstellt.", null, { duration: 2000, panelClass: ['snackbar-green'] });
             this.router.navigate(['/event', 1, returnObj.id]);
           }, error => {
-            this._snackBar.open(error.message, null, { duration: 3000, panelClass: ['snackbar-red'] });
+            this._snackBar.open(error.error.message, null, { duration: 7000, panelClass: ['snackbar-red'] });
           });
 
         }
