@@ -5,53 +5,83 @@
 
         <form [formGroup]="addBanFormGroup">
 
-            <mat-card>
+            <mat-card class="banCard">
 
-                <div class="row-flex">
+                <table class="content-table">
 
-                    <ng-container class="formContainer">
-                        <mat-form-field>
-                            <mat-label>Person</mat-label>
-                            <mat-select formControlName="person">
-                                <mat-option *ngFor="let person of allUsers" [value]="person">{{person.gamertag}}
-                                </mat-option>
-                            </mat-select>
-                        </mat-form-field>
-                    </ng-container>
+                    <tr>
+                        <td class="cellHeading">
+                            <p class="headline1">Person:</p>
+                        </td>
+                        <td>
+                            <ng-container class="formContainer">
+                                <mat-form-field>
+                                    <mat-label>Person</mat-label>
+                                    <mat-select formControlName="person">
+                                        <mat-option *ngFor="let person of allUsers" [value]="person">{{person.gamertag}}</mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </ng-container>
+                        </td>
+                    </tr>
 
-                    <ng-container class="formContainer">
-                        <mat-form-field class="width-class">
-                            <mat-label>Grund</mat-label>
-                            <input maxlength="64" #message type="text" matInput formControlName="reason">
-                            <mat-hint align="end">{{message.value.length}} / 64</mat-hint>
-                        </mat-form-field>
-                    </ng-container>
+                    <tr>
+                        <td class="cellHeading">
+                            <p class="headline1">Grund:</p>
+                        </td>
+                        <td>
+                            <ng-container class="formContainer">
+                                <mat-form-field class="width-class">
+                                    <mat-label>Grund</mat-label>
+                                    <input maxlength="64" #message type="text" matInput formControlName="reason">
+                                    <mat-hint align="end">{{message.value.length}} / 64</mat-hint>
+                                </mat-form-field>
+                            </ng-container>
+                        </td>
+                    </tr>
 
-                    <ng-container class="formContainer">
-                        <mat-slide-toggle formControlName="isPermanent">Permanent</mat-slide-toggle>
-                    </ng-container>
+                    <tr>
+                        <td class="cellHeading">
+                            <p class="headline1">Permanent?:</p>
+                        </td>
+                        <td>
+                            <ng-container class="formContainer">
+                                <mat-slide-toggle formControlName="isPermanent">Permanent</mat-slide-toggle>
+                            </ng-container>
+                        </td>
+                    </tr>
 
-                </div>
+                    <tr *ngIf="!this.addBanFormGroup.get('isPermanent').value">
+                        <td class="cellHeading" *ngIf="!this.addBanFormGroup.get('isPermanent').value">
+                            <p class="headline1">Gebannt bis (Datum):</p>
+                        </td>
+                        <td *ngIf="!this.addBanFormGroup.get('isPermanent').value">
+                            <ng-container class="formContainer">
+                                <mat-form-field>
+                                    <mat-label>Datum</mat-label>
+                                    <input matInput [matDatepicker]="dp" formControlName="bannedUntilDate">
+                                    <mat-datepicker-toggle matSuffix [for]="dp"></mat-datepicker-toggle>
+                                    <mat-datepicker #dp></mat-datepicker>
+                                </mat-form-field>
+                            </ng-container>
+                        </td>
+                    </tr>
 
-                <div class="row-flex">
+                    <tr *ngIf="!this.addBanFormGroup.get('isPermanent').value">
+                        <td class="cellHeading" *ngIf="!this.addBanFormGroup.get('isPermanent').value">
+                            <p class="headline1">Gebannt bis (Zeit):</p>
+                        </td>
+                        <td *ngIf="!this.addBanFormGroup.get('isPermanent').value">
+                            <ng-container class="formContainer">
+                                <mat-form-field>
+                                    <mat-label>Uhrzeit</mat-label>
+                                    <input matTimepicker formControlName="bannedUntilTime">
+                                </mat-form-field>
+                            </ng-container>
+                        </td>
+                    </tr>
 
-                    <ng-container class="formContainer" *ngIf="!this.addBanFormGroup.get('isPermanent').value">
-                        <mat-form-field>
-                            <mat-label>Datum</mat-label>
-                            <input matInput [matDatepicker]="dp" formControlName="bannedUntilDate">
-                            <mat-datepicker-toggle matSuffix [for]="dp"></mat-datepicker-toggle>
-                            <mat-datepicker #dp></mat-datepicker>
-                        </mat-form-field>
-                    </ng-container>
-
-                    <ng-container class="formContainer" *ngIf="!this.addBanFormGroup.get('isPermanent').value">
-                        <mat-form-field>
-                            <mat-label>Uhrzeit</mat-label>
-                            <input matTimepicker formControlName="bannedUntilTime">
-                        </mat-form-field>
-                    </ng-container>
-
-                </div>
+                </table>
 
                 <button color="primary" *ngIf="addBanFormValid()" style="margin-top: 10px; width: 100%;"
                 mat-raised-button (click)="banPerson()">Person bannen</button>

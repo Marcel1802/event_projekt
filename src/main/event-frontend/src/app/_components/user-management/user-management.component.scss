@@ -13,14 +13,25 @@ table {
 }
 
 .width-class {
-    width: 35%;
+    width: 12vw;
+    min-width: 200px;
 }
 
-.row-flex {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    justify-content: space-around;
+.headline1 {
+    font-size: 20px;
+}
 
-    margin-bottom: 10px;
+.cellHeading {
+    width: 200px;
+    padding-right: 3%;
+}
+
+td {
+    width: fit-content;
+}
+
+.banCard {
+    padding-top: 20px;
+    width: fit-content;
+    margin: auto;
 }
