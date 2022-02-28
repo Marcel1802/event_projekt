@@ -62,6 +62,11 @@ public class AdminService {
             return Response.status(400).entity(new ResponseMessage("Person to ban to found")).build(); // 400 Bad Request
         }
 
+        /*
+        if (Banlist.find("(gamertag = ?1 AND ispermanent = true) OR (gamertag = ?1 AND banneduntil > ?2",personToBan, LocalDateTime.now()).firstResult() != null) {
+            return Response.status(400).entity(new ResponseMessage("The person is already banned.")).build();
+        }
+        */
 
         Banlist newBan = new Banlist(personToBan, personWhoBanned, banlist.getBannedUntil(), banlist.getReason(), banlist.getPermanent());
 
