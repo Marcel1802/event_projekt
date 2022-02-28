@@ -1,6 +1,6 @@
 import { formatDate, Time } from '@angular/common';
 import { Component, Inject, LOCALE_ID, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { Event1 } from 'src/app/_classes/Event1';
@@ -25,6 +25,10 @@ export class CreateEventComponent implements OnInit {
   event2FormGrp: FormGroup;
   event3FormGrp: FormGroup;
 
+  team2TeamCount = 2;
+  t2teamCount = new FormControl();
+  event2teams = [];
+
   constructor(private router:Router, @Inject(LOCALE_ID) private locale: string, private _snackBar: MatSnackBar, private eventService: EventService, public formBuilder: FormBuilder, private loginService: UserdataService, private adminService: AdminService) {
 
     this.topFormGrp = this.formBuilder.group({
@@ -42,9 +46,7 @@ export class CreateEventComponent implements OnInit {
       maxPeople: ['', [Validators.required]]
     });
 
-
-
-
+    this.event2FormGrp = this.formBuilder.group({});
   }
 
   ngOnInit(): void {
@@ -55,7 +57,6 @@ export class CreateEventComponent implements OnInit {
     this.fetchGames();
     this.userGroups = this.loginService.userGroups;
   }
-
 
 
   fetchGames() {
@@ -111,4 +112,20 @@ export class CreateEventComponent implements OnInit {
       }
     }
   }
+
+  updateEvent2TeamCount() {
+    let count:number = this.t2teamCount.value;
+    this.event2teams = [];
+    this.event2FormGrp = this.formBuilder.group({});
+
+    for (let i = 0; i < count; i++) {
+      this.event2FormGrp.addControl(('e2teamname'+i), new FormControl("Team #"+(i+1)));
+      this.event2FormGrp.addControl(('e2maxPeople'+i), new FormControl(4));
+      this.event2teams.push({teamname: "", maxPeople: 2});
+    }
+
+  }
+
+  eventTypeSelectionChanged() { if (this.topFormGrp.get('eventType').value === "event2") this.updateEvent2TeamCount();}
+  
 }

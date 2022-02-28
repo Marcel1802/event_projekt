@@ -26,6 +26,22 @@ td {
     font-size: 20px;
 }
 
-.extra-cards {
-    width: c;
+.row-flex {
+    margin-top: 10px;
+}
+
+.team2boxLeft {
+    width: 50%;
+}
+
+.team2boxRight {
+    width: 50%;
+}
+
+.team2flex {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    align-items: baseline;
 }
