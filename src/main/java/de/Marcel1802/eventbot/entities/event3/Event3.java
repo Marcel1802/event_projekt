@@ -54,14 +54,13 @@ public class Event3 extends PanacheEntityBase {
     @JoinColumn(name = "group_id", nullable = true)
     private Group group;
 
-    public Event3(String eventName, LocalDateTime dateTime, String description, Game game, Group group){
+    public Event3(String eventName, LocalDateTime dateTime, String description, Game game, Group group, Person createdBy){
         this.setEventName(eventName);
         this.setId(UUID.randomUUID());
         this.setDate(dateTime);
         this.setDescription(description);
         this.setCreatedTime(LocalDateTime.now());
-        // FIXME: get logged in user by access token
-        this.setCreatedBy(Person.findById(UUID.fromString("4d742fee-ba68-41f1-9aa0-618b9ef6086d")));
+        this.setCreatedBy(createdBy);
         this.setGame(game);
         this.setGroup(group);
     }

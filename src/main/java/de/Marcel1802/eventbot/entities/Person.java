@@ -59,7 +59,7 @@ public class Person extends PanacheEntityBase {
 
     @JsonIgnore
     public boolean isBanned() {
-        if (Banlist.find("permanent = true AND bannedperson_id == ?1",this) != null || Banlist.find("permanent = false AND bannedperson_id = ?1 AND banneduntil > ?2", this, LocalDateTime.now()) != null) {
+        if (Banlist.find("ispermanent = true AND bannedperson_id = ?1",this).firstResult() != null || Banlist.find("ispermanent = false AND bannedperson_id = ?1 AND banneduntil > ?2", this, LocalDateTime.now()).firstResult() != null) {
             return true;
         }
 

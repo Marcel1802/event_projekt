@@ -172,8 +172,6 @@
         <mat-card style="margin-top: 4px;"
             *ngIf="topFormGrp.get('eventType').value !== null && topFormGrp.get('eventType').value === 'event2'">
 
-            <ng-container>
-
                 <tr
                     *ngIf="topFormGrp.get('eventType').value !== null && topFormGrp.get('eventType').value === 'event2'">
                     <td class="cellHeading">
@@ -208,12 +206,24 @@
 
                         <div class="team2flex">
                             <div class="team2boxLeft">
+                                <span>Team-Beschreibung:</span>
+                            </div>
+                            <div class="team2boxRight">
+                                <mat-form-field>
+                                    <mat-label>Team-Beschreibung:</mat-label>
+                                    <input matInput type="text" min="0" max="64" [formControlName]="'e2teamdescription'+i">
+                                </mat-form-field>
+                            </div>
+                        </div>
+
+                        <div class="team2flex">
+                            <div class="team2boxLeft">
                                 <span>Max. Mitglieder:</span>
                             </div>
                             <div class="team2boxRight">
                                 <mat-form-field>
                                     <mat-label>Max. Mitglieder</mat-label>
-                                    <input matInput type="number" min="1" max="16" [formControlName]="'e2maxPeople'+i">
+                                    <input matInput type="number" min="1" max="32" [formControlName]="'e2maxPeople'+i">
                                 </mat-form-field>
                             </div>
                         </div>
@@ -221,24 +231,93 @@
 
                 </ng-container>
 
-            </ng-container>
         </mat-card>
+
+        <!-- Event 3 -->
+        <mat-card style="margin-top: 4px;"
+            *ngIf="topFormGrp.get('eventType').value !== null && topFormGrp.get('eventType').value === 'event3'">
+
+                <tr
+                    *ngIf="topFormGrp.get('eventType').value !== null && topFormGrp.get('eventType').value === 'event3'">
+                    <td class="cellHeading">
+                        <p class="headline1">Anzahl Teams</p>
+                    </td>
+                    <td>
+                        <ng-container>
+                            <mat-form-field class="width-class">
+                                <mat-label>Anzahl Teams</mat-label>
+                                <input matInput type="number" min="2" max="4" (blur)="updateEvent3TeamCount()"
+                                    (change)="updateEvent3TeamCount()" [formControl]="t3teamCount">
+                            </mat-form-field>
+                        </ng-container>
+                    </td>
+                </tr>
+
+                <ng-container [formGroup]="event3FormGrp">
+
+                    <mat-card *ngFor="let t of event3teams; let i = index" class="row-flex">
+                        <h1>Team #{{i+1}}</h1>
+                        <div class="team2flex">
+                            <div class="team2boxLeft">
+                                <span>Team-Name:</span>
+                            </div>
+                            <div class="team2boxRight">
+                                <mat-form-field>
+                                    <mat-label>Team-Name</mat-label>
+                                    <input matInput type="text" min="4" max="64" [formControlName]="'e3teamname'+i">
+                                </mat-form-field>
+                            </div>
+                        </div>
+
+                        <div class="team2flex">
+                            <div class="team2boxLeft">
+                                <span>Team-Beschreibung:</span>
+                            </div>
+                            <div class="team2boxRight">
+                                <mat-form-field>
+                                    <mat-label>Team-Beschreibung:</mat-label>
+                                    <input matInput type="text" min="0" max="64" [formControlName]="'e3teamdescription'+i">
+                                </mat-form-field>
+                            </div>
+                        </div>
+
+                        <div class="team2flex">
+                            <div class="team2boxLeft">
+                                <span>Anzahl Slots:</span>
+                            </div>
+                            <div class="team2boxRight">
+                                <mat-form-field>
+                                    <mat-label>Anzahl Slots</mat-label>
+                                    <input matInput type="number" min="1" max="32" [formControlName]="'e3slotcount'+i" (change)="updateEvent3SlotCount(i)" (blur)="updateEvent3SlotCount(i)">
+                                </mat-form-field>
+                            </div>
+                        </div>
+
+                        <div *ngFor="let slot of event3Slots[i]; let j = index" class="row-flex">
+                            <div class="team2flex">
+                                <div class="team2boxLeft">
+                                    <span>Slots-Bezeichnung:</span>
+                                </div>
+                                <div class="team2boxRight">
+                                    <mat-form-field>
+                                        <mat-label>Slot-Bezeichnung</mat-label>
+                                        <input matInput type="text" min="2" max="32" [formControlName]="'e3slot-'+i+'-'+j">
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                        </div>
+
+                        
+                    </mat-card>
+
+                </ng-container>
+
+        </mat-card>
+
+
     </table>
 
     <button color="primary" *ngIf="topFormGrp.get('eventType').value" style="margin: 10px auto 10px auto; width: 100%;"
         mat-raised-button (click)="createEvent()">Event erstellen</button>
 
 </mat-card>
-
-
-
-<!-- 
-<mat-card class="row-flex"
-    *ngIf="topFormGrp.get('eventType').value !== null && topFormGrp.get('eventType').value === 'event2'">
-    event2-container
-</mat-card>
-
-<mat-card class="row-flex"
-    *ngIf="topFormGrp.get('eventType').value !== null && topFormGrp.get('eventType').value === 'event3'">
-    event3-container
-</mat-card> -->

@@ -5,7 +5,7 @@ import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.UUID;
 
-public class Event3Creation {
+public class Event2Creation {
 
     public UUID gameID;
     public String eventName;
@@ -13,9 +13,9 @@ public class Event3Creation {
     public LocalDateTime date;
     public UUID groupID;
     public String description;
-    public HashSet<Event3SquadCreation> teams;
+    public HashSet<Event2TeamCreation> teams;
 
-    public Event3Creation(UUID game, String eventName,@JsonbDateFormat(value = "yyyy-MM-dd HH:mm") LocalDateTime date, UUID groupID, String description, HashSet<Event3SquadCreation> teams) {
+    public Event2Creation(UUID game, String eventName,@JsonbDateFormat(value = "yyyy-MM-dd HH:mm") LocalDateTime date, UUID groupID, String description, HashSet<Event2TeamCreation> teams) {
         this.gameID = game;
         this.eventName = eventName;
         this.date = date;
@@ -24,7 +24,7 @@ public class Event3Creation {
         this.teams = teams;
     }
 
-    public Event3Creation() {
+    public Event2Creation() {
     }
 
     public UUID getGameID() {
@@ -67,11 +67,11 @@ public class Event3Creation {
         this.description = description;
     }
 
-    public HashSet<Event3SquadCreation> getTeams() {
+    public HashSet<Event2TeamCreation> getTeams() {
         return teams;
     }
 
-    public void setTeams(HashSet<Event3SquadCreation> teams) {
+    public void setTeams(HashSet<Event2TeamCreation> teams) {
         this.teams = teams;
     }
 }

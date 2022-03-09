@@ -6,8 +6,10 @@ import de.Marcel1802.eventbot.entities.ResponseMessage;
 import de.Marcel1802.eventbot.entities.creationEntities.Event1Creation;
 import de.Marcel1802.eventbot.entities.event1.Event;
 import de.Marcel1802.eventbot.entities.groups.Group;
+import io.quarkus.security.identity.SecurityIdentity;
 
 import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Inject;
 import javax.ws.rs.core.Response;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -15,6 +17,9 @@ import java.util.UUID;
 
 @ApplicationScoped
 public class Event1Service {
+
+    @Inject
+    SecurityIdentity identity;
 
     public Response getNextEvent(){
 
@@ -146,31 +151,31 @@ public class Event1Service {
             return Response.status(400).entity(new ResponseMessage("Invalid event name")).build();
         }
 
-
-
         if (event.getDescription() == null) {
             event.setDescription("");
         }
-
-
 
         if (event.getMinPeople() < 4) {
             return Response.status(400).entity(new ResponseMessage("At least 4 people should be allowed to take part in an event.")).build();
         }
 
-
-
         if (event.getMinPeople() > event.getMaxPeople()) {
             return Response.status(400).entity(new ResponseMessage("The maximum amount of users cannot be less that the minimum amount.")).build();
         }
-
-
 
         if (event.getDate().isBefore(LocalDateTime.now().plusDays(3))) {
             return Response.status(400).entity(new ResponseMessage("Events must be planned 72 hours before they take part.")).build();
         }
 
+        //TODO: createdby by keycloak
+        Person createdBy = Person.find("gamertag = ?1", identity.getPrincipal().getName()).firstResult();
+        if (createdBy == null) {
+            return Response.status(500).entity(new ResponseMessage("Cannot find person who created this event in the DB.")).build();
+        }
 
+        if (createdBy.isBanned()){
+            return Response.status(403).entity(new ResponseMessage("Sorry, but you are currently banned.")).build(); // 403 Forbidden
+        }
 
         Group groupFromDB = null;
 
@@ -181,30 +186,23 @@ public class Event1Service {
             }
         }
 
+        Game gameToUpload = Game.findById(event.getGameID());
 
-        Game gameFromDB = null;
-
-        if (event.getGameID() != null) {
-            gameFromDB = Game.findById(event.getGameID());
-            if (gameFromDB == null) {
-                return Response.status(400).entity(new ResponseMessage("Invalid game provided.")).build();
-            }
+        if (gameToUpload == null) {
+            return Response.status(400).entity(new ResponseMessage("The provided game is invalid")).build();
         }
-
-
 
         Event newObj = new Event
         (
             event.getEventName(),
-            gameFromDB,
+            gameToUpload,
             event.getDate(),
             event.getDescription(),
             event.getMinPeople(),
             event.getMaxPeople(),
-            groupFromDB
+            groupFromDB,
+            createdBy
         );
-
-
 
         newObj.persist();
 

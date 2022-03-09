@@ -67,7 +67,7 @@ export class UserdataService {
       this.loadLoginData(data);
     },error => {
 
-      console.warn("profil nicht gefunden.")
+      console.warn("profil nicht gefunden, wird neu angelegt")
 
       this.adminService.createPerson(userID,userName).subscribe(data1 => {
 
@@ -77,7 +77,7 @@ export class UserdataService {
 
       },error => {
 
-        console.warn("profil wieder nicht gefunden")
+        console.warn("profil nach anlegen wieder nicht gefunden, ausloggen")
 
         this.keycloakService.logout();
       })

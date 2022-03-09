@@ -1,5 +1,6 @@
 package de.Marcel1802.eventbot.rest;
 
+import de.Marcel1802.eventbot.entities.creationEntities.Event2Creation;
 import de.Marcel1802.eventbot.entities.event2.Event2;
 import de.Marcel1802.eventbot.entities.event2.Event2Team;
 import de.Marcel1802.eventbot.service.Event2Service;
@@ -57,7 +58,9 @@ public class Event2Rest {
     @POST
     @Transactional
     @Path("create/event")
-    public Response createEvent(Event2 newEvent) { return  eservice.createEvent(newEvent); }
+    public Response createEvent(Event2Creation newEvent) {
+        return eservice.createEvent(newEvent);
+    }
 
     @POST
     @Transactional

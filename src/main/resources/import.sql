@@ -33,6 +33,7 @@ INSERT INTO person (ID, accountcreated, lastlogin, gamertag) VALUES ('4acf390a-6
 INSERT INTO person (ID, accountcreated, lastlogin, gamertag) VALUES ('3650de02-be67-4fa4-8fab-6fe2359cd638', '2021-01-01 15:00:00', '2021-10-13 16:33:00','Testperson18');
 INSERT INTO person (ID, accountcreated, lastlogin, gamertag) VALUES ('bde914ce-0963-4f12-8d13-1f594cc417d9', '2021-01-01 15:00:00', '2021-10-13 16:33:00','Testperson19');
 INSERT INTO person (ID, accountcreated, lastlogin, gamertag) VALUES ('5c3205be-3f3a-4e8e-b4f5-662172e49728', '2021-01-01 15:00:00', '2021-10-13 16:33:00','Testperson20');
+INSERT INTO person (ID, accountcreated, lastlogin, gamertag) VALUES ('b02888d3-27d9-44da-bc1c-83563648301c', '2022-03-01 20:00:00', '2022-03-01 20:00:00','admin');
 
 INSERT INTO grouptbl (id, description, name) VALUES ('42e8ee6e-9f23-4d0a-a1ed-1cad1a2f2dd3','Freundeskreis von Max Mustermann','Krasse Typen');
 INSERT INTO grouptbl (id, description, name) VALUES ('1bb54661-b4ac-4a77-9e69-496156c6c020','Marcels Testpersonenarmee','Die Bots');
@@ -66,6 +67,7 @@ INSERT INTO relgroupperson (id, group_id, person_id, rank) VALUES ('57f42e6f-139
 INSERT INTO relgroupperson (id, group_id, person_id, rank) VALUES ('62710271-edf3-4286-ae70-04efb9203211','0848bc8d-79a2-4eaa-b132-21b02e87457c','037d7373-9f73-4ef5-916a-7c5d9ee960c0', 'MEMBER');
 INSERT INTO relgroupperson (id, group_id, person_id, rank) VALUES ('c510f5bb-52f5-4889-b3ce-744c7a3431e7','0848bc8d-79a2-4eaa-b132-21b02e87457c','4d742fee-ba68-41f1-9aa0-618b9ef6086d', 'MEMBER');
 INSERT INTO relgroupperson (id, group_id, person_id, rank) VALUES ('63e15427-9e24-44bd-927d-8cb8a98775ef','0848bc8d-79a2-4eaa-b132-21b02e87457c','6c4f7ec2-25d9-4742-843f-8a4351dcfab9', 'MEMBER');
+INSERT INTO relgroupperson (id, group_id, person_id, rank) VALUES ('0ccc8b04-9741-402b-8203-f779b46907d7','0848bc8d-79a2-4eaa-b132-21b02e87457c','b02888d3-27d9-44da-bc1c-83563648301c', 'MEMBER');
 
 INSERT INTO banlist (ID, bantime, banneduntil, ispermanent, reason, bannedfrom_id, bannedperson_id) VALUES ('261135fe-afe2-4a4e-a1ab-bae826100ea6','2021-10-13 13:39:00', NULL, true, 'TestbannPerm', '4e45e088-591a-4909-8bb9-0d923bd3e7c8','c4fcafc0-884d-49ff-8e4d-99be01e61615');
 INSERT INTO banlist (ID, bantime, banneduntil, ispermanent, reason, bannedfrom_id, bannedperson_id) VALUES ('8434d698-98b1-408a-9e7a-cea24ced89da','2021-01-13 13:39:00', '2021-01-15 13:39:00', false, 'TestbannNotPerm1', '4e45e088-591a-4909-8bb9-0d923bd3e7c8','70d170ec-1f96-458c-aa92-a903dcedcf7f');

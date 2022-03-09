@@ -1,14 +1,21 @@
 package de.Marcel1802.eventbot.service;
 
+import de.Marcel1802.eventbot.entities.Game;
 import de.Marcel1802.eventbot.entities.Person;
 import de.Marcel1802.eventbot.entities.ResponseMessage;
+import de.Marcel1802.eventbot.entities.creationEntities.Event3Creation;
+import de.Marcel1802.eventbot.entities.creationEntities.Event3SlotCreation;
+import de.Marcel1802.eventbot.entities.creationEntities.Event3SquadCreation;
 import de.Marcel1802.eventbot.entities.event3.Event3;
 import de.Marcel1802.eventbot.entities.event3.Event3RelEventSquad;
 import de.Marcel1802.eventbot.entities.event3.Event3RelSquadSlot;
 import de.Marcel1802.eventbot.entities.event3.Event3Slot;
 import de.Marcel1802.eventbot.entities.event3.Event3Squad;
+import de.Marcel1802.eventbot.entities.groups.Group;
+import io.quarkus.security.identity.SecurityIdentity;
 
 import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Inject;
 import javax.ws.rs.core.Response;
 import java.time.LocalDateTime;
 import java.util.HashSet;
@@ -18,6 +25,9 @@ import java.util.UUID;
 
 @ApplicationScoped
 public class Event3Service {
+
+    @Inject
+    SecurityIdentity identity;
 
     public Response getNextA3Event() {
 
@@ -142,7 +152,7 @@ public class Event3Service {
         return Response.status(200).entity(event3SquadList).build();
     }
 
-    public Response createA3Event(Event3 event) {
+    public Response createA3Event(Event3Creation event) {
 
         if (event == null || event.getEventName() == null || event.getDate() == null) {
             return Response.status(400).entity(new ResponseMessage("Null values are not allowed")).build();
@@ -156,9 +166,12 @@ public class Event3Service {
             event.setDescription("");
         }
 
-        //TODO: createdby by keycloak
+        Person createdBy = Person.find("gamertag = ?1", identity.getPrincipal().getName()).firstResult();
+        if (createdBy == null) {
+            return Response.status(500).entity(new ResponseMessage("Cannot find person who created this event in the DB.")).build();
+        }
 
-        if (event.getCreatedBy().isBanned()){
+        if (createdBy.isBanned()){
             return Response.status(403).entity(new ResponseMessage("Sorry, but you are currently banned.")).build(); // 403 Forbidden
         }
 
@@ -166,13 +179,29 @@ public class Event3Service {
             return Response.status(400).entity(new ResponseMessage("Events must be planned 72 hours before they take part.")).build();
         }
 
+        Game gameToUpload = Game.findById(event.getGameID());
+
+        if (gameToUpload == null) {
+            return Response.status(400).entity(new ResponseMessage("The provided game is invalid")).build();
+        }
+
+        Group groupFromDB = null;
+
+        if (event.getGroupID() != null) {
+            groupFromDB = Group.findById(event.getGroupID());
+            if (groupFromDB == null) {
+                return Response.status(400).entity(new ResponseMessage("Invalid group provided.")).build();
+            }
+        }
+
         Event3 newEvent = new Event3
         (
             event.getEventName(),
             event.getDate(),
             event.getDescription(),
-            event.getGame(),
-            event.getGroup()
+            gameToUpload,
+            groupFromDB,
+            createdBy
         );
 
         newEvent.persist();
@@ -180,6 +209,36 @@ public class Event3Service {
         if (!newEvent.isPersistent()) {
             return Response.status(500).entity(new ResponseMessage("Cannot save the new event")).build();
         }
+
+        for (Event3SquadCreation team : event.getTeams()) {
+
+            Event3Squad newSquad = new Event3Squad(team.getSquadname(), team.getDescription());
+            newSquad.persist();
+            if (!newSquad.isPersistent()) return Response.status(500).entity(new ResponseMessage("Cannot persist team.")).build();
+
+            Event3RelEventSquad relEventSquad = new Event3RelEventSquad(newEvent, newSquad);
+            relEventSquad.persist();
+            if (!relEventSquad.isPersistent()) return Response.status(500).entity(new ResponseMessage("Cannot persist relation between squad and event")).build();
+
+            for (Event3SlotCreation slot : team.getSlots()) {
+
+                Event3Slot newSlot = new Event3Slot(slot.getRole());
+                newSlot.persist();
+                if (!newSlot.isPersistent()) return Response.status(500).entity(new ResponseMessage("Cannot persist new slot.")).build();
+
+                Event3RelSquadSlot relSquadSlot = new Event3RelSquadSlot(newSquad, newSlot);
+                relSquadSlot.persist();
+                if (!relSquadSlot.isPersistent()) return Response.status(500).entity(new ResponseMessage("Cannot persist relation between slot and squad.")).build();
+
+            }
+        }
+
+
+
+
+
+
+
 
         return Response.status(201).entity(newEvent).build();
 

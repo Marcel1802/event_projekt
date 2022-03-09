@@ -1,5 +1,6 @@
 package de.Marcel1802.eventbot.rest;
 
+import de.Marcel1802.eventbot.entities.creationEntities.Event3Creation;
 import de.Marcel1802.eventbot.entities.event3.Event3;
 import de.Marcel1802.eventbot.entities.event3.Event3Slot;
 import de.Marcel1802.eventbot.entities.event3.Event3Squad;
@@ -88,7 +89,7 @@ public class Event3Rest {
     @POST
     @Transactional
     @Path("create/event")
-    public Response createA3Event(Event3 event) {
+    public Response createA3Event(Event3Creation event) {
         return a3service.createA3Event(event);
     }
 

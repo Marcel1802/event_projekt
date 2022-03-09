@@ -56,7 +56,7 @@ public class Event2 extends PanacheEntityBase {
 
     public Event2() {}
 
-    public Event2(String eventName, Game game, LocalDateTime date, String description, Group group) {
+    public Event2(String eventName, Game game, LocalDateTime date, String description, Group group, Person createdBy) {
 
         this.id = UUID.randomUUID();
         this.setEventName(eventName);
@@ -64,8 +64,7 @@ public class Event2 extends PanacheEntityBase {
         this.setDate(date);
         this.setDescription(description);
         this.setCreatedTime(LocalDateTime.now());
-        //TODO: keycloak get person
-        this.setCreatedBy(Person.findById(UUID.fromString("4d742fee-ba68-41f1-9aa0-618b9ef6086d")));
+        this.setCreatedBy(createdBy);
         this.setGroup(group);
 
     }

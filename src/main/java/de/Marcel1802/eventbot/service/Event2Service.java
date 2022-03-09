@@ -3,12 +3,17 @@ package de.Marcel1802.eventbot.service;
 import de.Marcel1802.eventbot.entities.Game;
 import de.Marcel1802.eventbot.entities.Person;
 import de.Marcel1802.eventbot.entities.ResponseMessage;
+import de.Marcel1802.eventbot.entities.creationEntities.Event2Creation;
+import de.Marcel1802.eventbot.entities.creationEntities.Event2TeamCreation;
 import de.Marcel1802.eventbot.entities.event2.Event2;
 import de.Marcel1802.eventbot.entities.event2.Event2RelEventTeam;
 import de.Marcel1802.eventbot.entities.event2.Event2RelTeamPerson;
 import de.Marcel1802.eventbot.entities.event2.Event2Team;
+import de.Marcel1802.eventbot.entities.groups.Group;
+import io.quarkus.security.identity.SecurityIdentity;
 
 import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Inject;
 import javax.ws.rs.core.Response;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -17,7 +22,11 @@ import java.util.UUID;
 @ApplicationScoped
 public class Event2Service {
 
+    @Inject
+    SecurityIdentity identity;
+
     public Response getAllEvents() {
+
         List<Event2> returnList = Event2.listAll();
 
         if (returnList.isEmpty()) {
@@ -63,9 +72,9 @@ public class Event2Service {
         return Response.ok().entity(e).build();
     }
 
-    public Response createEvent(Event2 eventParam) {
+    public Response createEvent(Event2Creation eventParam) {
 
-        if (eventParam == null || eventParam.getEventName() == null || eventParam.getDate() == null || eventParam.getGame() == null) {
+        if (eventParam == null || eventParam.getEventName() == null || eventParam.getDate() == null || eventParam.getGameID() == null) {
             return Response.status(400).entity(new ResponseMessage("Null value provided")).build();
         }
 
@@ -77,9 +86,12 @@ public class Event2Service {
             eventParam.setDescription("");
         }
 
-        //TODO: createdby by keycloak
+        Person createdBy = Person.find("gamertag = ?1", identity.getPrincipal().getName()).firstResult();
+        if (createdBy == null) {
+            return Response.status(500).entity(new ResponseMessage("Cannot find person who created this event in the DB.")).build();
+        }
 
-        if (eventParam.getCreatedBy().isBanned()){
+        if (createdBy.isBanned()){
             return Response.status(403).entity(new ResponseMessage("Sorry, but you are currently banned.")).build(); // 403 Forbidden
         }
 
@@ -87,17 +99,29 @@ public class Event2Service {
             return Response.status(400).entity(new ResponseMessage("Events must be planned 72 hours before they take part.")).build();
         }
 
-        if (Game.findById(eventParam.getGame().getId()) == null || !Game.findById(eventParam.getGame().getId()).equals(eventParam.getGame())) {
+        Game gameToUpload = Game.findById(eventParam.getGameID());
+
+        if (gameToUpload == null) {
             return Response.status(400).entity(new ResponseMessage("The provided game is invalid")).build();
+        }
+
+        Group groupFromDB = null;
+
+        if (eventParam.getGroupID() != null) {
+            groupFromDB = Group.findById(eventParam.getGroupID());
+            if (groupFromDB == null) {
+                return Response.status(400).entity(new ResponseMessage("Invalid group provided.")).build();
+            }
         }
 
         Event2 newEvent = new Event2
         (
                 eventParam.getEventName(),
-                eventParam.getGame(),
+                gameToUpload,
                 eventParam.getDate(),
                 eventParam.getDescription(),
-                eventParam.getGroup()
+                groupFromDB,
+                createdBy
         );
 
         newEvent.persist();
@@ -106,13 +130,23 @@ public class Event2Service {
             return Response.status(500).entity(new ResponseMessage("Cannot save the new event")).build();
         }
 
+        for (Event2TeamCreation ev : eventParam.getTeams()) {
+            Event2Team temp = new Event2Team(ev.teamname, ev.teamdescription, ev.maxPeople);
+            temp.persist();
+            if (!temp.isPersistent()) return Response.status(500).entity(new ResponseMessage("Unable to save team.")).build();
+
+            Event2RelEventTeam tempRel = new Event2RelEventTeam(newEvent, temp);
+            tempRel.persist();
+            if (!tempRel.isPersistent()) return Response.status(500).entity(new ResponseMessage("Unable to save team event relation.")).build();
+        }
+
         return Response.status(201).entity(newEvent).build();
 
     }
 
-    public Response createTeam(UUID paramTeamID, Event2Team teamParam) {
+    public Response createTeam(UUID paramEventID, Event2Team teamParam) {
 
-        if (paramTeamID == null || teamParam == null || teamParam.getTeamname() == null) {
+        if (paramEventID == null || teamParam == null || teamParam.getTeamname() == null) {
             return Response.status(400).entity(new ResponseMessage("Null value provided")).build();
         }
 
@@ -120,7 +154,7 @@ public class Event2Service {
             return Response.status(400).entity(new ResponseMessage("Invalid team name")).build();
         }
 
-        Event2 eventFromDB = Event2.findById(paramTeamID);
+        Event2 eventFromDB = Event2.findById(paramEventID);
 
         if (eventFromDB == null) {
             return Response.status(400).entity(new ResponseMessage("Invalid team provided")).build();

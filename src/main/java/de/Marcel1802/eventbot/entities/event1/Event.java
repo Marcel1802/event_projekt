@@ -61,7 +61,7 @@ public class Event extends PanacheEntityBase {
     @JoinColumn(name = "group_id", nullable = true)
     private Group group;
 
-    public Event(String eventName, Game game, LocalDateTime dateTime, String description, int minParticipants, int maxParticipants, Group group){
+    public Event(String eventName, Game game, LocalDateTime dateTime, String description, int minParticipants, int maxParticipants, Group group, Person createdBy){
         this.setEventName(eventName);
         this.id = UUID.randomUUID();
         this.setGame(game);
@@ -70,8 +70,7 @@ public class Event extends PanacheEntityBase {
         this.setMaxPeople(maxParticipants);
         this.setMinPeople(minParticipants);
         this.setCreatedTime(LocalDateTime.now());
-        // FIXME: get logged in user by access token
-        this.setCreatedBy(Person.findById(UUID.fromString("4d742fee-ba68-41f1-9aa0-618b9ef6086d")));
+        this.setCreatedBy(createdBy);
         this.setGroup(group);
     }
 
